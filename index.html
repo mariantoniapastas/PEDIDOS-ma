@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mariantonia – Fábrica</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Barlow', sans-serif; background: #F4F7F9; color: #1A1A1A; min-height: 100vh; }
+
+/* ── SCREENS ── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── HEADER ── */
+header { background: #1C3A4A; padding: 16px 20px 13px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+.header-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 26px; color: white; letter-spacing: 4px; text-transform: uppercase; line-height: 1; }
+.header-sub { font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 3px; text-transform: uppercase; margin-top: 3px; }
+.header-back { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 12px; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-family: inherit; }
+.header-back:hover { background: rgba(255,255,255,0.2); color: white; }
+.header-right { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); display: flex; gap: 6px; }
+.header-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); font-size: 11px; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-family: inherit; }
+.header-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+
+/* ── LOGIN / PIN ── */
+.login-wrap { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px 80px; background: #1C3A4A; }
+.login-logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 48px; color: white; letter-spacing: 6px; text-transform: uppercase; line-height: 1; }
+.login-tagline { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 4px; text-transform: uppercase; margin-top: 8px; margin-bottom: 56px; }
+.pin-wrap { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px 20px; background: #1C3A4A; }
+.pin-card { background: white; border-radius: 16px; padding: 28px 24px; width: 100%; max-width: 340px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); text-align: center; }
+.pin-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: #6B7280; margin-bottom: 4px; }
+.pin-suc { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: 2px; text-transform: uppercase; color: #1C3A4A; margin-bottom: 22px; }
+.pin-dots { display: flex; gap: 14px; justify-content: center; margin-bottom: 26px; }
+.pin-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #D0DDE5; background: white; transition: all 0.15s; }
+.pin-dot.filled { background: #1C3A4A; border-color: #1C3A4A; }
+.pin-dot.error { background: #D0021B; border-color: #D0021B; }
+.pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.pin-key { padding: 14px; border-radius: 10px; border: 1.5px solid #D0DDE5; background: white; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 22px; cursor: pointer; transition: all 0.12s; color: #1C3A4A; }
+.pin-key:hover { background: #E8F0F4; border-color: #1C3A4A; }
+.pin-key:active { background: #1C3A4A; color: white; }
+.pin-key.del { font-size: 16px; color: #6B7280; font-weight: 400; font-family: inherit; }
+.pin-error { color: #D0021B; font-size: 12px; margin-bottom: 12px; min-height: 18px; }
+.pin-back { margin-top: 16px; background: none; border: none; color: rgba(255,255,255,0.6); font-family: inherit; font-size: 13px; cursor: pointer; }
+.pin-back:hover { color: white; }
+
+/* ── FACTORY DASHBOARD ── */
+.fab-container { max-width: 900px; margin: 0 auto; padding: 20px 14px 60px; }
+.date-bar { background: white; border: 1px solid #D0DDE5; border-radius: 12px; padding: 14px 20px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.date-value { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 20px; color: #1C3A4A; }
+.pedidos-badge { background: #E8F0F4; color: #1C3A4A; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; border: 1px solid #D0DDE5; }
+.tabs { display: flex; gap: 8px; margin-bottom: 18px; }
+.tab { flex: 1; padding: 11px 16px; border-radius: 9px; border: 1.5px solid #D0DDE5; background: white; font-family: inherit; font-weight: 600; font-size: 13px; cursor: pointer; color: #6B7280; text-align: center; }
+.tab.active { background: #1C3A4A; color: white; border-color: #1C3A4A; }
+.print-btn { background: #1C3A4A; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-family: inherit; font-weight: 600; font-size: 13px; cursor: pointer; }
+.prod-section { background: white; border: 1px solid #D0DDE5; border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
+.prod-cat-title { background: #1C3A4A; color: white; padding: 10px 18px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; }
+.prod-col-heads { display: flex; padding: 7px 18px; background: #E8F0F4; border-bottom: 1px solid #D0DDE5; }
+.prod-col-heads span { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #6B7280; font-weight: 600; }
+.prod-item { display: flex; align-items: center; padding: 11px 18px; border-bottom: 1px solid #D0DDE5; gap: 8px; }
+.prod-item:last-child { border-bottom: none; }
+.prod-item.done-row { opacity: 0.4; }
+.prod-name { flex: 1; font-size: 14px; }
+.prod-unit { font-size: 11px; color: #6B7280; background: #F0F4F7; padding: 2px 8px; border-radius: 20px; border: 1px solid #D0DDE5; }
+.prod-qty { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 22px; color: #1C3A4A; min-width: 50px; text-align: right; }
+.prod-breakdown { font-size: 11px; color: #6B7280; min-width: 150px; text-align: right; }
+.prod-check { width: 22px; height: 22px; border-radius: 5px; border: 2px solid #D0DDE5; cursor: pointer; flex-shrink: 0; transition: all 0.15s; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: transparent; }
+.prod-check.done { background: #1C3A4A; border-color: #1C3A4A; color: white; }
+.dispatch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.dispatch-card { background: white; border: 1px solid #D0DDE5; border-radius: 12px; overflow: hidden; }
+.dispatch-card-header { background: #1C3A4A; color: white; padding: 13px 18px; display: flex; justify-content: space-between; align-items: center; }
+.dispatch-suc-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 1px; text-transform: uppercase; }
+.dispatch-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 18px; border-bottom: 1px solid #D0DDE5; font-size: 13.5px; }
+.dispatch-item:last-child { border-bottom: none; }
+.dispatch-cat-label { padding: 5px 18px 3px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #6B7280; font-weight: 600; background: #F8FAFC; border-bottom: 1px solid #D0DDE5; }
+.no-orders { text-align: center; padding: 60px 20px; color: #6B7280; }
+.fab-view { display: none; }
+.fab-view.active { display: block; }
+
+/* ── ADMIN PANEL ── */
+.admin-section { background: white; border: 1px solid #D0DDE5; border-radius: 12px; overflow: hidden; margin-bottom: 16px; }
+.admin-section-title { background: #1C3A4A; color: white; padding: 10px 18px; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; font-weight: 600; }
+.admin-section-body { padding: 16px 18px; }
+.admin-cat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #1C3A4A; font-weight: 700; margin: 14px 0 8px; padding-bottom: 5px; border-bottom: 1px solid #D0DDE5; }
+.admin-cat-label:first-child { margin-top: 0; }
+.admin-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #F0F4F7; gap: 10px; }
+.admin-item:last-child { border-bottom: none; }
+.admin-item-name { flex: 1; font-size: 13.5px; }
+.toggle-switch { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+.toggle-slider { position: absolute; cursor: pointer; inset: 0; background: #D0DDE5; border-radius: 24px; transition: 0.2s; }
+.toggle-slider:before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+input:checked + .toggle-slider { background: #1C3A4A; }
+input:checked + .toggle-slider:before { transform: translateX(20px); }
+.pin-change-row { display: flex; gap: 10px; align-items: flex-end; }
+.pin-change-row input { flex: 1; padding: 10px 14px; border: 1.5px solid #D0DDE5; border-radius: 8px; font-family: inherit; font-size: 15px; letter-spacing: 4px; text-align: center; font-weight: 700; }
+.pin-change-row input:focus { outline: none; border-color: #1C3A4A; }
+.btn-save-pin { background: #1C3A4A; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-family: inherit; font-weight: 600; font-size: 13px; cursor: pointer; white-space: nowrap; }
+.pin-feedback { font-size: 12px; color: #1A6640; min-height: 16px; }
+.btn-save-products { width: 100%; padding: 13px; background: #1C3A4A; color: white; border: none; border-radius: 9px; font-family: inherit; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 4px; }
+
+@media print {
+  body { background: white; }
+  header, .tabs, .date-bar, .print-btn, .prod-check, .no-print { display: none !important; }
+  body.print-desp-mode > *:not(#despPrintView) { display: none !important; }
+  #despPrintView { display: block !important; }
+  .fab-container { padding: 0; max-width: 100%; }
+  .prod-section { border: 1px solid #ccc; margin-bottom: 8px; break-inside: avoid; }
+  .prod-cat-title { background: #1C3A4A !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .dispatch-card { break-before: page; }
+  .dispatch-card:first-child { break-before: avoid; }
+  .dispatch-card-header { background: #1C3A4A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .print-header-block { display: block !important; margin-bottom: 12px; border-bottom: 2px solid #1C3A4A; padding-bottom: 8px; }
+  .fab-view { display: block !important; }
+}
+.print-header-block { display: none; }
+</style>
+</head>
+<body>
+
+<!-- ══ SCREEN: LOGIN ══ -->
+<div id="screenLogin" class="screen active" style="min-height:100vh">
+  <div class="login-wrap">
+    <div class="login-logo">MARIANTONIA</div>
+    <div class="login-tagline">fábrica</div>
+    <div style="width:100%;max-width:320px">
+      <div style="font-size:12px;color:rgba(255,255,255,0.5);text-align:center;margin-bottom:20px;letter-spacing:1px">Ingresá tu PIN de fábrica para continuar</div>
+      <button style="width:100%;padding:16px;border-radius:12px;border:none;background:rgba(255,255,255,0.15);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:2px;text-transform:uppercase;color:white;cursor:pointer" onclick="showScreen('screenPin')">Ingresar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SCREEN: PIN ══ -->
+<div id="screenPin" class="screen" style="min-height:100vh;background:#1C3A4A">
+  <div class="pin-wrap">
+    <div class="pin-card">
+      <div class="pin-title">Acceso a Fábrica</div>
+      <div class="pin-suc">FÁBRICA</div>
+      <div style="font-size:12px;color:#6B7280;margin-bottom:18px">Ingresá tu PIN</div>
+      <div class="pin-dots">
+        <div class="pin-dot" id="pd0"></div>
+        <div class="pin-dot" id="pd1"></div>
+        <div class="pin-dot" id="pd2"></div>
+        <div class="pin-dot" id="pd3"></div>
+      </div>
+      <div class="pin-error" id="pinError"></div>
+      <div class="pin-keypad">
+        <button class="pin-key" onclick="pinPress('1')">1</button>
+        <button class="pin-key" onclick="pinPress('2')">2</button>
+        <button class="pin-key" onclick="pinPress('3')">3</button>
+        <button class="pin-key" onclick="pinPress('4')">4</button>
+        <button class="pin-key" onclick="pinPress('5')">5</button>
+        <button class="pin-key" onclick="pinPress('6')">6</button>
+        <button class="pin-key" onclick="pinPress('7')">7</button>
+        <button class="pin-key" onclick="pinPress('8')">8</button>
+        <button class="pin-key" onclick="pinPress('9')">9</button>
+        <button class="pin-key" style="visibility:hidden"></button>
+        <button class="pin-key" onclick="pinPress('0')">0</button>
+        <button class="pin-key del" onclick="pinDel()">⌫</button>
+      </div>
+    </div>
+    <button class="pin-back" onclick="showScreen('screenLogin')">← Volver</button>
+  </div>
+</div>
+
+<!-- ══ SCREEN: FACTORY ══ -->
+<div id="screenFactory" class="screen">
+  <header style="position:relative">
+    <button class="header-back" onclick="goLogin()">← Salir</button>
+    <div class="header-title">MARIANTONIA</div>
+    <div class="header-sub" id="fabHeaderSub">Dashboard Fábrica</div>
+    <div class="header-right">
+      <button class="header-btn" onclick="showFabSection('dashboard')">Pedidos</button>
+      <button class="header-btn" onclick="showFabSection('admin')">⚙ Admin</button>
+    </div>
+  </header>
+
+  <!-- Dashboard -->
+  <div id="fabDashboard" class="fab-container">
+    <div class="date-bar no-print">
+      <div>
+        <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#6B7280;margin-bottom:3px">Pedidos para</div>
+        <div class="date-value" id="displayDate"></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <div class="pedidos-badge" id="pedidosBadge">0 sucursales</div>
+        <input type="date" id="dateFilter" style="padding:8px 12px;border-radius:8px;border:1px solid #D0DDE5;font-family:inherit;font-size:13px;color:#1C3A4A;" onchange="renderDashboard()">
+        <button onclick="recargarDashboard()" style="padding:8px 12px;border-radius:8px;border:1px solid #D0DDE5;background:white;font-family:inherit;font-size:13px;color:#1C3A4A;cursor:pointer" title="Recargar">🔄 Recargar</button>
+      </div>
+    </div>
+    <div class="tabs no-print">
+      <button class="tab active" id="tabProd" onclick="switchFabTab('prod')">📋 Lista de Producción</button>
+      <button class="tab" id="tabDesp" onclick="switchFabTab('desp')">📦 Pedidos por Sucursal</button>
+      <button class="tab" id="tabPend" onclick="switchFabTab('pend')">⏳ Pendientes</button>
+    </div>
+    <div id="fabProdView" class="fab-view active">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px" class="no-print">
+        <div style="font-size:12px;color:#6B7280">Totales consolidados</div>
+        <button class="print-btn" onclick="printProd()">🖨 Imprimir Producción</button>
+      </div>
+      <div class="print-header-block" id="printHeaderProd"></div>
+      <div id="prodContent"></div>
+    </div>
+    <div id="fabDespView" class="fab-view">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px" class="no-print">
+        <div style="font-size:12px;color:#6B7280">Pedido individual por sucursal</div>
+        <button class="print-btn" onclick="printDesp()">🖨 Imprimir Despacho</button>
+      </div>
+      <div class="dispatch-grid" id="despContent"></div>
+    </div>
+    <div id="fabPendView" class="fab-view">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px" class="no-print">
+        <div style="font-size:12px;color:#6B7280">Mercadería elaborada esperando despacho</div>
+        <button class="print-btn" onclick="showAddPendingModal()">+ Agregar pendiente</button>
+      </div>
+      <div id="pendContent"></div>
+    </div>
+  </div>
+
+  <!-- Add Pending Modal -->
+  <div id="pendingModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;align-items:center;justify-content:center;padding:20px">
+    <div style="background:white;border-radius:16px;padding:24px;width:100%;max-width:420px;box-shadow:0 8px 32px rgba(0,0,0,0.3)">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;letter-spacing:2px;text-transform:uppercase;color:#1C3A4A;margin-bottom:18px">Agregar Pendiente</div>
+      <div style="margin-bottom:12px">
+        <label style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:6px">Sucursal</label>
+        <select id="pmSuc" style="width:100%;padding:10px 14px;border:1.5px solid #D0DDE5;border-radius:8px;font-family:inherit;font-size:15px;color:#1C3A4A">
+          <option value="bernal">Bernal</option>
+          <option value="quilmes">Quilmes</option>
+          <option value="don-bosco">Don Bosco</option>
+        </select>
+      </div>
+      <div style="margin-bottom:12px">
+        <label style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:6px">Producto</label>
+        <select id="pmProd" style="width:100%;padding:10px 14px;border:1.5px solid #D0DDE5;border-radius:8px;font-family:inherit;font-size:14px;color:#1C3A4A"></select>
+      </div>
+      <div style="margin-bottom:18px">
+        <label style="display:block;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:6px">Cantidad</label>
+        <input type="number" id="pmQty" min="1" value="1" style="width:100%;padding:10px 14px;border:1.5px solid #D0DDE5;border-radius:8px;font-family:inherit;font-size:15px;font-weight:700;color:#1C3A4A">
+      </div>
+      <div style="display:flex;gap:10px">
+        <button onclick="closePendingModal()" style="flex:1;padding:12px;border:1.5px solid #D0DDE5;border-radius:9px;background:white;font-family:inherit;font-weight:600;font-size:14px;cursor:pointer;color:#6B7280">Cancelar</button>
+        <button onclick="savePendingItem()" style="flex:2;padding:12px;border:none;border-radius:9px;background:#1C3A4A;color:white;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer">Guardar pendiente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin -->
+  <div id="fabAdmin" class="fab-container" style="display:none">
+    <div class="admin-section">
+      <div class="admin-section-title">Catálogo de Productos</div>
+      <div class="admin-section-body">
+        <p style="font-size:12px;color:#6B7280;margin-bottom:14px">Desactivá productos que no están disponibles. Las sucursales no podrán pedirlos.</p>
+        <div id="adminProductList"></div>
+        <button class="btn-save-products" onclick="saveProducts()">Guardar cambios de catálogo</button>
+      </div>
+    </div>
+    <div class="admin-section">
+      <div class="admin-section-title">PINs de Sucursales</div>
+      <div class="admin-section-body">
+        <p style="font-size:12px;color:#6B7280;margin-bottom:16px">Podés resetear el PIN de cualquier sucursal desde acá.</p>
+        <div id="adminPinList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ CONSTANTS ══
+const SUC_NAMES = { bernal: "Bernal", quilmes: "Quilmes", "don-bosco": "Don Bosco" };
+const PRODUCTS = [
+  {idx:0,  cat:"Ravioles Tradicionales", name:"Carne y Verdura",              price:4400,  unit:"Caja"},
+  {idx:1,  cat:"Ravioles Tradicionales", name:"Ricotta",                       price:4400,  unit:"Caja"},
+  {idx:2,  cat:"Ravioles Caseros",       name:"Provolone",                     price:5600,  unit:"Caja"},
+  {idx:3,  cat:"Ravioles Caseros",       name:"Ricotta y Jamón",               price:4100,  unit:"Caja"},
+  {idx:4,  cat:"Ravioles Caseros",       name:"Ricotta y Espinaca",            price:3700,  unit:"Caja"},
+  {idx:5,  cat:"Ravioles Caseros",       name:"Sin Sal (Ricotta y Espinaca)",  price:3700,  unit:"Caja"},
+  {idx:6,  cat:"Ravioles Especiales",    name:"Don Antonio",                   price:4000,  unit:"Caja"},
+  {idx:7,  cat:"Ravioles Especiales",    name:"Primavera",                     price:4400,  unit:"Caja"},
+  {idx:8,  cat:"Ravioles Especiales",    name:"De la Huerta",                  price:4400,  unit:"Caja"},
+  {idx:9,  cat:"Ravioles Especiales",    name:"Albahaca",                      price:4000,  unit:"Caja"},
+  {idx:10, cat:"Ravioles Especiales",    name:"4 Quesos",                      price:4200,  unit:"Caja"},
+  {idx:11, cat:"Ravioles Especiales",    name:"Teresa",                        price:4300,  unit:"Caja"},
+  {idx:12, cat:"Ravioles Especiales",    name:"Mariantonia",                   price:4000,  unit:"Caja"},
+  {idx:13, cat:"Ravioles Especiales",    name:"Del Pintor",                    price:4400,  unit:"Caja"},
+  {idx:14, cat:"Ravioles Especiales",    name:"Milonga",                       price:6200,  unit:"Caja"},
+  {idx:15, cat:"Ravioles Especiales",    name:"Bondiola",                      price:5700,  unit:"Caja"},
+  {idx:16, cat:"Ravioles Especiales",    name:"Vacío con Provoleta",           price:15900, unit:"Caja"},
+  {idx:17, cat:"Ravioles Especiales",    name:"Salmón",                        price:10500, unit:"Caja"},
+  {idx:18, cat:"Ravioles Especiales",    name:"Seso y Verdura",                price:7200,  unit:"Caja"},
+  {idx:19, cat:"Ravioles Especiales",    name:"Cordero",                       price:7400,  unit:"Caja"},
+  {idx:20, cat:"Ravioles Especiales",    name:"Veganos",                       price:6200,  unit:"Caja"},
+  {idx:21, cat:"Sorrentinos",            name:"Muzzarella y Jamón",            price:6200,  unit:"Caja"},
+  {idx:22, cat:"Sorrentinos",            name:"Calabaza y Queso",              price:8200,  unit:"Caja"},
+  {idx:23, cat:"Sorrentinos",            name:"Fugazzeta",                     price:6200,  unit:"Caja"},
+  {idx:24, cat:"Sorrentinos",            name:"Capresse",                      price:6200,  unit:"Caja"},
+  {idx:25, cat:"Sorrentinos",            name:"Mariantonia",                   price:6200,  unit:"Caja"},
+  {idx:26, cat:"Fideos",                 name:"Anchos Amarillos",              price:5100,  unit:"Kg"},
+  {idx:27, cat:"Fideos",                 name:"Medianos Amarillos",            price:5100,  unit:"Kg"},
+  {idx:28, cat:"Fideos",                 name:"Yemita",                        price:5100,  unit:"Kg"},
+  {idx:29, cat:"Fideos",                 name:"Anchos Verdes",                 price:5100,  unit:"Kg"},
+  {idx:30, cat:"Fideos",                 name:"Medianos Verdes",               price:5100,  unit:"Kg"},
+  {idx:31, cat:"Fideos",                 name:"Yemita Verde",                  price:5100,  unit:"Kg"},
+  {idx:32, cat:"Fideos",                 name:"Fucciles",                      price:5100,  unit:"Kg"},
+  {idx:33, cat:"Fideos",                 name:"Fucciles Verdes",               price:5100,  unit:"Kg"},
+  {idx:34, cat:"Fideos",                 name:"Vermicelli",                    price:5100,  unit:"Kg"},
+  {idx:35, cat:"Fideos",                 name:"Nápoles",                       price:5100,  unit:"Kg"},
+  {idx:36, cat:"Fideos",                 name:"Hélice",                        price:5100,  unit:"Kg"},
+  {idx:37, cat:"Fideos",                 name:"Caracolitos",                   price:5100,  unit:"Kg"},
+  {idx:38, cat:"Fideos",                 name:"Mostacholes",                   price:5100,  unit:"Kg"},
+  {idx:39, cat:"Fideos",                 name:"Nero di Seppia",                price:5100,  unit:"Kg"},
+  {idx:40, cat:"Ñoquis",                 name:"Papa y Ricotta",                price:4800,  unit:"Kg"},
+  {idx:41, cat:"Ñoquis",                 name:"Soufflé de Espinaca",           price:4800,  unit:"Kg"},
+  {idx:42, cat:"Ñoquis",                 name:"Soufflé de Calabaza",           price:4800,  unit:"Kg"},
+  {idx:43, cat:"Ñoquis",                 name:"Soufflé Malbec",                price:6200,  unit:"Kg"},
+  {idx:44, cat:"Canelones",              name:"Carne y Verdura",               price:3400,  unit:"Unidad"},
+  {idx:45, cat:"Canelones",              name:"Ricotta y Jamón",               price:2700,  unit:"Unidad"},
+  {idx:46, cat:"Canelones",              name:"Ricotta y Espinaca",            price:2700,  unit:"Unidad"},
+  {idx:47, cat:"Lasañas",                name:"Carne y Verdura",               price:3400,  unit:"Unidad"},
+  {idx:48, cat:"Lasañas",                name:"Ricotta y Jamón",               price:2700,  unit:"Unidad"},
+  {idx:49, cat:"Lasañas",                name:"Ricotta y Espinaca",            price:2700,  unit:"Unidad"},
+  {idx:50, cat:"Lasañas",                name:"Argentana",                     price:11000, unit:"Unidad"},
+  {idx:51, cat:"Masas",                  name:"Tarta Individual (Cocina)",     price:1400,  unit:"Unidad"},
+  {idx:52, cat:"Masas",                  name:"Empanada (Cocina)",             price:1900,  unit:"Docena"},
+  {idx:53, cat:"Masas",                  name:"Empanada (Mostrador)",          price:1900,  unit:"Docena"},
+  {idx:54, cat:"Masas",                  name:"Pascualina (Mostrador)",        price:1400,  unit:"Unidad x2"},
+  {idx:55, cat:"Masas",                  name:"Lasaña (masa)",                 price:3700,  unit:"Unidad"},
+  {idx:56, cat:"Hecho a Mano",           name:"Lunette",                       price:20600, unit:"Kg"},
+  {idx:57, cat:"Hecho a Mano",           name:"Cappelletti",                   price:12000, unit:"Kg"},
+  {idx:58, cat:"Congelados",             name:"Ravioles Provolone x12",        price:4300,  unit:"Unidad"},
+  {idx:59, cat:"Congelados",             name:"Ravioles Jamón x12",            price:3800,  unit:"Unidad"},
+  {idx:60, cat:"Congelados",             name:"Ravioles Espinaca x12",         price:3800,  unit:"Unidad"},
+  {idx:61, cat:"Congelados",             name:"Ravioles Don Antonio x12",      price:3800,  unit:"Unidad"},
+  {idx:62, cat:"Congelados",             name:"Ravioles Primavera x12",        price:4200,  unit:"Unidad"},
+  {idx:63, cat:"Congelados",             name:"Ravioles De la Huerta x12",     price:4100,  unit:"Unidad"},
+  {idx:64, cat:"Congelados",             name:"Sorrentinos Muzzarella y Jamón x10", price:7200, unit:"Unidad"},
+  {idx:65, cat:"Congelados",             name:"Sorrentinos Calabaza y Queso x10",  price:8200, unit:"Unidad"},
+  {idx:66, cat:"Congelados",             name:"Ñoquis de Papa x200g",          price:3300,  unit:"Unidad"},
+  {idx:67, cat:"Congelados",             name:"Ñoquis de Verdura x200g",       price:3600,  unit:"Unidad"},
+  {idx:68, cat:"Congelados",             name:"Ñoquis de Calabaza x200g",      price:3600,  unit:"Unidad"},
+];
+
+// ══ API CONFIG ══
+const API_URL = 'https://script.google.com/macros/s/AKfycbw9961yJLIW2j-853kGaRqYmPRP1_PHNlY7hxv9eDrQt_8I27ppLrpIByvPA2iXMtny/exec';
+
+let _cache = { pins: {}, fab_pin: '0000', disabled: [], orders: [], pending: {}, dispatch: {}, dispatchFecha: null };
+
+// ══ STATE ══
+let pinBuffer = "";
+let checkedItems = {};
+
+// ══ API — JSONP QUEUE ══
+const _queue = [];
+let _queueRunning = false;
+
+function api(params) {
+  const writeActions = ['savePedido','savePendientes','saveDispatch','saveDisabled','savePins'];
+  if (writeActions.includes(params.action)) return apiWrite(params);
+  return apiRead(params);
+}
+
+function apiRead(params) {
+  return new Promise((resolve) => {
+    _queue.push({ params, resolve });
+    if (!_queueRunning) _runQueue();
+  });
+}
+
+async function _runQueue() {
+  _queueRunning = true;
+  while (_queue.length > 0) {
+    const { params, resolve } = _queue.shift();
+    const result = await _jsonp(params);
+    resolve(result);
+  }
+  _queueRunning = false;
+}
+
+function _jsonp(params) {
+  return new Promise((resolve) => {
+    const cbName = 'cb_' + Date.now() + '_' + Math.floor(Math.random()*99999);
+    const script = document.createElement('script');
+    let done = false;
+    const timer = setTimeout(() => { if (done) return; done=true; cleanup(); resolve(null); }, 12000);
+    window[cbName] = (data) => { if (done) return; done=true; cleanup(); resolve(data); };
+    function cleanup() { clearTimeout(timer); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
+    script.onerror = () => { if (!done) { done=true; cleanup(); resolve(null); } };
+    script.src = API_URL + '?' + new URLSearchParams({ ...params, callback: cbName }).toString();
+    document.head.appendChild(script);
+  });
+}
+
+function apiWrite(params) {
+  return fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify(params),
+    headers: { 'Content-Type': 'text/plain' }
+  }).then(r => r.json()).catch(() => null);
+}
+
+// ══ SYNC HELPERS ══
+function loadPins()    { return _cache.pins; }
+function loadDisabled(){ return _cache.disabled; }
+function loadOrders()  { return _cache.orders; }
+function loadPending() { return _cache.pending; }
+function loadDispatch(){ return _cache.dispatch; }
+function dispatchKey(fecha, suc, cat, name) { return fecha+'|'+suc+'|'+cat+'|'+name; }
+
+async function savePins(pins)      { _cache.pins = pins;       await api({ action: 'savePins',       data: JSON.stringify({ pins }) }); }
+async function saveFabPin(pin)     { _cache.fab_pin = pin;     await api({ action: 'savePins',       data: JSON.stringify({ fab_pin: pin }) }); }
+async function saveDisabled(d)     { _cache.disabled = d;      await api({ action: 'saveDisabled',   data: JSON.stringify(d) }); }
+async function savePending(p)      { _cache.pending = p;       await api({ action: 'savePendientes', data: JSON.stringify(p) }); }
+async function saveDispatch(d) {
+  _cache.dispatch = d;
+  const fecha = document.getElementById('dateFilter')?.value || _cache.dispatchFecha;
+  if (fecha) await api({ action: 'saveDispatch', data: JSON.stringify({ fecha, dispatch: d }) });
+}
+
+// ══ LOADING ══
+function showLoading(on) {
+  let el = document.getElementById('loadingOverlay');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'loadingOverlay';
+    el.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9999;background:rgba(0,0,0,0.3)';
+    const inner = document.createElement('div');
+    inner.style.cssText = 'background:rgba(28,58,74,0.92);color:white;padding:16px 28px;border-radius:12px;font-weight:700;font-size:16px;letter-spacing:2px';
+    inner.textContent = 'CARGANDO...';
+    el.appendChild(inner);
+    document.body.appendChild(el);
+  }
+  el.style.display = on ? 'flex' : 'none';
+}
+
+// ══ NAVIGATION ══
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goLogin() { pinBuffer=""; clearPinDots(); showScreen('screenLogin'); }
+
+// ══ PIN LOGIC ══
+function clearPinDots() {
+  for (let i=0;i<4;i++) { const d=document.getElementById('pd'+i); d.classList.remove('filled','error'); }
+}
+
+function pinPress(digit) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += digit;
+  document.getElementById('pd'+(pinBuffer.length-1)).classList.add('filled');
+  if (pinBuffer.length === 4) setTimeout(checkPin, 120);
+}
+
+function pinDel() {
+  if (!pinBuffer.length) return;
+  document.getElementById('pd'+(pinBuffer.length-1)).classList.remove('filled');
+  pinBuffer = pinBuffer.slice(0,-1);
+  document.getElementById('pinError').textContent = '';
+}
+
+function checkPin() {
+  const fabPin = _cache.fab_pin || '0000';
+  if (pinBuffer === fabPin) {
+    enterFactory();
+  } else {
+    document.getElementById('pinError').textContent = 'PIN incorrecto.';
+    for (let i=0;i<4;i++) { const d=document.getElementById('pd'+i); d.classList.remove('filled'); d.classList.add('error'); }
+    setTimeout(() => { pinBuffer=""; clearPinDots(); document.getElementById('pinError').textContent=''; }, 900);
+  }
+}
+
+// ══ FACTORY ENTRY ══
+async function enterFactory() {
+  showScreen('screenFactory');
+  showFabSection('dashboard');
+  const fecha = new Date().toISOString().split('T')[0];
+  document.getElementById('dateFilter').value = fecha;
+  await loadAllData(fecha);
+  buildAdminPanel();
+  renderDashboard();
+}
+
+function showFabSection(sec) {
+  document.getElementById('fabDashboard').style.display = sec === 'dashboard' ? 'block' : 'none';
+  document.getElementById('fabAdmin').style.display = sec === 'admin' ? 'block' : 'none';
+  document.getElementById('fabHeaderSub').textContent = sec === 'dashboard' ? 'Dashboard Fábrica' : 'Administración';
+}
+
+// ══ DATA LOADING ══
+async function loadAllData(fecha) {
+  showLoading(true);
+  try {
+    const [pinsRes, pedidosRes, pendientesRes, dispatchRes] = await Promise.all([
+      api({ action: 'getPins' }).catch(() => null),
+      api({ action: 'getPedidos', fecha }).catch(() => null),
+      api({ action: 'getPendientes' }).catch(() => null),
+      api({ action: 'getDispatch', fecha }).catch(() => null)
+    ]);
+    if (pinsRes)       { _cache.pins = pinsRes.data; _cache.fab_pin = pinsRes.fab_pin; }
+    if (pedidosRes)    _cache.orders = pedidosRes.data;
+    if (pendientesRes) _cache.pending = pendientesRes.data;
+    if (dispatchRes)   { _cache.dispatch = dispatchRes.data; _cache.dispatchFecha = fecha; }
+  } catch(e) { console.error(e); }
+  showLoading(false);
+}
+
+async function loadOrdersForDate(fecha) {
+  showLoading(true);
+  try {
+    const [pedidosRes, dispatchRes] = await Promise.all([
+      api({ action: 'getPedidos', fecha }).catch(() => null),
+      api({ action: 'getDispatch', fecha }).catch(() => null)
+    ]);
+    if (pedidosRes)  _cache.orders = pedidosRes.data;
+    if (dispatchRes) { _cache.dispatch = dispatchRes.data; _cache.dispatchFecha = fecha; }
+  } catch(e) { console.error(e); }
+  showLoading(false);
+}
+
+async function loadPendingFromServer() {
+  const res = await api({ action: 'getPendientes' });
+  if (res && res.ok) _cache.pending = res.data;
+  return _cache.pending;
+}
+
+// ══ DASHBOARD ══
+async function recargarDashboard() {
+  const fecha = document.getElementById('dateFilter').value;
+  await loadOrdersForDate(fecha);
+  renderDashboard();
+}
+
+async function renderDashboard() {
+  const fecha = document.getElementById('dateFilter').value;
+  if (fecha !== _cache.dispatchFecha) await loadOrdersForDate(fecha);
+  const orders = loadOrders().filter(o => o.fecha === fecha);
+  document.getElementById('displayDate').textContent = formatDate(fecha);
+  document.getElementById('pedidosBadge').textContent = orders.length === 0 ? 'Sin pedidos' : orders.length === 1 ? '1 sucursal' : orders.length + ' sucursales';
+  renderProd(orders);
+  renderDesp(orders);
+}
+
+function formatDate(str) {
+  const [y,m,d] = str.split('-');
+  const months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  return `${parseInt(d)} de ${months[parseInt(m)-1]} de ${y}`;
+}
+
+function renderProd(orders) {
+  const el = document.getElementById('prodContent');
+  if (!orders.length) { el.innerHTML = `<div class="no-orders"><div style="font-size:48px;margin-bottom:16px">📋</div><h3 style="font-family:'Barlow Condensed',sans-serif;font-size:22px;color:#1C3A4A;text-transform:uppercase;letter-spacing:1px">Sin pedidos para este día</h3></div>`; return; }
+  const CAT_ORDER = ["Ravioles Tradicionales","Ravioles Caseros","Ravioles Especiales","Sorrentinos","Fideos","Ñoquis","Canelones","Lasañas","Masas","Hecho a Mano","Congelados"];
+  const fecha = document.getElementById('dateFilter').value;
+  const disp = loadDispatch();
+  const consolidated = {};
+  orders.forEach(order => order.items.forEach(item => {
+    const k = dispatchKey(fecha, order.sucursal, item.cat, item.name);
+    if (disp[k] === 'cancel') return;
+    const key = item.cat+'|||'+item.name;
+    if (!consolidated[key]) consolidated[key] = {cat:item.cat,name:item.name,unit:item.unit,total:0,breakdown:[]};
+    consolidated[key].total += item.qty;
+    consolidated[key].breakdown.push({suc:SUC_NAMES[order.sucursal],qty:item.qty});
+  }));
+  const byCategory = {};
+  Object.values(consolidated).forEach(item => { if(!byCategory[item.cat]) byCategory[item.cat]=[]; byCategory[item.cat].push(item); });
+  const sortedCats = Object.keys(byCategory).sort((a,b)=>(CAT_ORDER.indexOf(a)||99)-(CAT_ORDER.indexOf(b)||99));
+  let html = '';
+  sortedCats.forEach(cat => {
+    html += `<div class="prod-section">
+      <div class="prod-cat-title">${cat}</div>
+      <div class="prod-col-heads"><span style="flex:1">Producto</span><span style="min-width:150px;text-align:right">Por sucursal</span><span style="min-width:60px;text-align:right">Total</span><span style="min-width:30px"></span></div>
+      ${byCategory[cat].map(item => {
+        const id = 'chk-'+item.cat.replace(/\W/g,'')+item.name.replace(/\W/g,'');
+        const done = checkedItems[id];
+        return `<div class="prod-item ${done?'done-row':''}" id="${id}-row">
+          <div class="prod-name">${item.name}</div>
+          <span class="prod-unit">${item.unit}</span>
+          <div class="prod-breakdown">${item.breakdown.map(b=>b.suc+': '+b.qty).join(' · ')}</div>
+          <div class="prod-qty">${item.total}</div>
+          <div class="prod-check ${done?'done':''}" onclick="toggleCheck('${id}')" title="Marcar elaborado">${done?'✓':''}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+
+function renderDesp(orders) {
+  const el = document.getElementById('despContent');
+  if (!orders.length) {
+    el.innerHTML = `<div class="no-orders" style="grid-column:1/-1"><div style="font-size:48px;margin-bottom:16px">📦</div><h3 style="font-family:'Barlow Condensed',sans-serif;font-size:22px;color:#1C3A4A;text-transform:uppercase">Sin pedidos</h3></div>`;
+    return;
+  }
+  const fecha = document.getElementById('dateFilter').value;
+  const disp = loadDispatch();
+  el.innerHTML = orders.map(order => {
+    const bycat = {};
+    order.items.forEach(item => { if (!bycat[item.cat]) bycat[item.cat] = []; bycat[item.cat].push(item); });
+    const total = order.items.length;
+    const done = order.items.filter(i => disp[dispatchKey(fecha, order.sucursal, i.cat, i.name)]).length;
+    const pct = total ? Math.round(done / total * 100) : 0;
+    return `<div class="dispatch-card">
+      <div class="dispatch-card-header">
+        <div class="dispatch-suc-name">${SUC_NAMES[order.sucursal]}</div>
+        <div style="font-size:11px;background:rgba(255,255,255,0.15);padding:3px 10px;border-radius:20px">${done}/${total} gestionados</div>
+      </div>
+      ${pct < 100 ? `<div style="height:3px;background:rgba(255,255,255,0.15)"><div style="height:100%;width:${pct}%;background:#7BB8D4;transition:width 0.3s"></div></div>` : '<div style="height:3px;background:#2ECC71"></div>'}
+      ${Object.entries(bycat).map(([cat, items]) => `
+        <div class="dispatch-cat-label">${cat}</div>
+        ${items.map(item => {
+          const k = dispatchKey(fecha, order.sucursal, item.cat, item.name);
+          const d = disp[k] || {};
+          const sendVal = d.send !== undefined ? d.send : item.qty;
+          const pendVal = d.pend !== undefined ? d.pend : '';
+          const cancelled = d.cancelled || false;
+          const diff = sendVal - item.qty;
+          const isShort = !cancelled && sendVal < item.qty;
+          const isExtra = !cancelled && sendVal > item.qty;
+          const isExact = !cancelled && sendVal == item.qty;
+          let statusBadge = '';
+          if (cancelled) statusBadge = '<span style="font-size:10px;background:#FADBD8;color:#C0392B;padding:1px 7px;border-radius:10px;font-weight:600">✗ no se envía</span>';
+          else if (isExact && d.send !== undefined) statusBadge = '<span style="font-size:10px;background:#D4EFDF;color:#1A6640;padding:1px 7px;border-radius:10px;font-weight:600">✓ completo</span>';
+          else if (isShort && d.pend > 0) statusBadge = '<span style="font-size:10px;background:#FFF0C0;color:#7A5C00;padding:1px 7px;border-radius:10px;font-weight:600">⏳ parcial + pendiente</span>';
+          else if (isShort && d.pend === 0) statusBadge = '<span style="font-size:10px;background:#F0E6FF;color:#6B21A8;padding:1px 7px;border-radius:10px;font-weight:600">◼ parcial + cierre</span>';
+          else if (isExtra) statusBadge = '<span style="font-size:10px;background:#E0F0FF;color:#1A4A8A;padding:1px 7px;border-radius:10px;font-weight:600">↑ extra</span>';
+          const rowBg = cancelled ? '#FFF5F5' : isExact && d.send !== undefined ? '#F0FAF4' : isShort ? '#FFFCF0' : isExtra ? '#F0F7FF' : 'white';
+          return `<div style="padding:10px 14px;border-bottom:1px solid #D0DDE5;background:${rowBg}">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <div style="flex:1;min-width:120px">
+                <div style="font-size:13.5px;${cancelled?'text-decoration:line-through;color:#999':''}">${item.name}</div>
+                <div style="margin-top:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+                  <span style="font-size:11px;color:#6B7280">Pedido: <strong style="color:#1C3A4A">${item.qty} ${item.unit}</strong></span>
+                  ${statusBadge}
+                </div>
+              </div>
+              ${!cancelled ? `
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+                  <span style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#6B7280;font-weight:600">Enviar</span>
+                  <input type="number" min="0" step="0.1" value="${sendVal}"
+                    style="width:62px;padding:6px 4px;border:1.5px solid ${isShort?'#F0C040':isExtra?'#7BB8D4':'#D0DDE5'};border-radius:7px;font-family:inherit;font-size:14px;font-weight:700;text-align:center;color:#1C3A4A;background:white"
+                    onchange="updateSend('${fecha}','${order.sucursal}','${item.cat}','${item.name}',this.value,${item.qty},'${item.unit}')">
+                </div>
+                ${isShort ? `
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
+                  <span style="font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#7A5C00;font-weight:600">A pendientes</span>
+                  <input type="number" min="0" step="0.1" value="${pendVal !== '' ? pendVal : Math.max(0, item.qty - sendVal)}"
+                    style="width:62px;padding:6px 4px;border:1.5px solid #F0C040;border-radius:7px;font-family:inherit;font-size:14px;font-weight:700;text-align:center;color:#7A5C00;background:#FFFDF0"
+                    placeholder="0"
+                    onchange="updatePend('${fecha}','${order.sucursal}','${item.cat}','${item.name}',this.value,${item.qty},'${item.unit}')">
+                </div>` : ''}
+              </div>` : ''}
+              <button onclick="toggleCancel('${fecha}','${order.sucursal}','${item.cat}','${item.name}',${item.qty},'${item.unit}')"
+                title="${cancelled ? 'Deshacer' : 'No se envía'}"
+                style="width:30px;height:30px;border-radius:7px;border:1.5px solid ${cancelled?'#C0392B':'#D0DDE5'};background:${cancelled?'#FADBD8':'white'};font-size:13px;cursor:pointer;flex-shrink:0">✗</button>
+            </div>
+          </div>`;
+        }).join('')}
+      `).join('')}
+      ${order.comentarios ? `<div style="padding:10px 14px;font-size:12px;color:#6B7280;font-style:italic;border-top:1px solid #D0DDE5;background:#FAFBFC">${order.comentarios}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function _syncPending(suc, cat, name, unit, newPendQty, oldPendQty) {
+  const pending = loadPending();
+  if (!pending[suc]) pending[suc] = [];
+  const idx = pending[suc].findIndex(i => i.name === name && i.cat === cat);
+  const oldQ = parseFloat(oldPendQty) || 0;
+  const newQ = parseFloat(newPendQty) || 0;
+  if (newQ > 0) {
+    if (idx > -1) { pending[suc][idx].qty = pending[suc][idx].qty - oldQ + newQ; if (pending[suc][idx].qty <= 0) pending[suc].splice(idx, 1); }
+    else pending[suc].push({ cat, name, unit, qty: newQ, date_added: new Date().toISOString().split('T')[0] });
+  } else {
+    if (idx > -1) { pending[suc][idx].qty -= oldQ; if (pending[suc][idx].qty <= 0) pending[suc].splice(idx, 1); }
+  }
+  savePending(pending);
+}
+
+function updateSend(fecha, suc, cat, name, val, ordered, unit) {
+  const disp = loadDispatch();
+  const k = dispatchKey(fecha, suc, cat, name);
+  const d = disp[k] || {};
+  const oldPend = d.pend || 0;
+  const sendQty = parseFloat(val) || 0;
+  const newPend = sendQty < ordered ? (d.pend !== undefined ? d.pend : Math.max(0, ordered - sendQty)) : 0;
+  _syncPending(suc, cat, name, unit, newPend, oldPend);
+  disp[k] = { ...d, send: sendQty, pend: newPend, cancelled: false };
+  saveDispatch(disp);
+  const orders = loadOrders().filter(o => o.fecha === fecha);
+  renderDesp(orders);
+}
+
+function updatePend(fecha, suc, cat, name, val, ordered, unit) {
+  const disp = loadDispatch();
+  const k = dispatchKey(fecha, suc, cat, name);
+  const d = disp[k] || {};
+  const oldPend = d.pend !== undefined ? d.pend : 0;
+  const newPend = parseFloat(val) || 0;
+  _syncPending(suc, cat, name, unit, newPend, oldPend);
+  disp[k] = { ...d, pend: newPend };
+  saveDispatch(disp);
+  const orders = loadOrders().filter(o => o.fecha === fecha);
+  renderDesp(orders);
+}
+
+function toggleCancel(fecha, suc, cat, name, qty, unit) {
+  const disp = loadDispatch();
+  const k = dispatchKey(fecha, suc, cat, name);
+  const d = disp[k] || {};
+  if (d.cancelled) {
+    disp[k] = { ...d, cancelled: false };
+  } else {
+    if (d.pend > 0) _syncPending(suc, cat, name, unit, 0, d.pend);
+    disp[k] = { ...d, send: 0, pend: 0, cancelled: true };
+  }
+  saveDispatch(disp);
+  const orders = loadOrders().filter(o => o.fecha === fecha);
+  renderDesp(orders);
+}
+
+async function renderPending() {
+  await loadPendingFromServer();
+  const pending = loadPending();
+  const el = document.getElementById('pendContent');
+  const allEmpty = Object.values(pending).every(arr => !arr || arr.length === 0);
+  if (allEmpty) {
+    el.innerHTML = `<div class="no-orders"><div style="font-size:48px;margin-bottom:16px">✅</div><h3 style="font-family:'Barlow Condensed',sans-serif;font-size:22px;color:#1C3A4A;text-transform:uppercase;letter-spacing:1px">Sin pendientes</h3><p style="color:#6B7280;margin-top:8px">Toda la mercadería fue despachada.</p></div>`;
+    return;
+  }
+  let html = '';
+  Object.entries(SUC_NAMES).forEach(([key, name]) => {
+    const items = pending[key] || [];
+    if (!items.length) return;
+    html += `<div class="prod-section" style="margin-bottom:16px">
+      <div class="prod-cat-title" style="display:flex;justify-content:space-between;align-items:center">
+        <span>${name}</span>
+        <span style="font-size:11px;background:rgba(255,255,255,0.15);padding:2px 10px;border-radius:20px">${items.length} ítem${items.length>1?'s':''}</span>
+      </div>
+      ${items.map((item, i) => `
+        <div class="prod-item" style="gap:12px">
+          <div class="prod-name">${item.name}<div style="font-size:11px;color:#6B7280;margin-top:2px">${item.cat}</div></div>
+          <span class="prod-unit">${item.unit}</span>
+          <div class="prod-qty">${item.qty}</div>
+          <button onclick="dispatchPending('${key}',${i})" style="background:#E8F4EE;color:#1A6640;border:1px solid #B8DFC8;padding:6px 14px;border-radius:7px;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap">✓ Despachado</button>
+        </div>`).join('')}
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+
+function dispatchPending(suc, idx) {
+  const pending = loadPending();
+  pending[suc].splice(idx, 1);
+  savePending(pending);
+  renderPending();
+}
+
+function showAddPendingModal() {
+  const sel = document.getElementById('pmProd');
+  sel.innerHTML = PRODUCTS.map(p => `<option value="${p.idx}">${p.cat} — ${p.name} (${p.unit})</option>`).join('');
+  document.getElementById('pendingModal').style.display = 'flex';
+}
+
+function closePendingModal() { document.getElementById('pendingModal').style.display = 'none'; }
+
+function savePendingItem() {
+  const suc = document.getElementById('pmSuc').value;
+  const prodIdx = parseInt(document.getElementById('pmProd').value);
+  const qty = parseInt(document.getElementById('pmQty').value) || 0;
+  if (!qty) return;
+  const prod = PRODUCTS.find(p => p.idx === prodIdx);
+  const pending = loadPending();
+  if (!pending[suc]) pending[suc] = [];
+  const existing = pending[suc].find(i => i.name === prod.name && i.cat === prod.cat);
+  if (existing) { existing.qty += qty; }
+  else { pending[suc].push({ cat: prod.cat, name: prod.name, unit: prod.unit, qty, date_added: new Date().toISOString().split('T')[0] }); }
+  savePending(pending);
+  closePendingModal();
+  renderPending();
+}
+
+function toggleCheck(id) {
+  checkedItems[id] = !checkedItems[id];
+  const orders = loadOrders().filter(o => o.fecha === document.getElementById('dateFilter').value);
+  renderProd(orders);
+}
+
+// ══ TABS ══
+function switchFabTab(tab) {
+  document.getElementById('fabProdView').classList.toggle('active', tab==='prod');
+  document.getElementById('fabDespView').classList.toggle('active', tab==='desp');
+  document.getElementById('fabPendView').classList.toggle('active', tab==='pend');
+  document.getElementById('tabProd').classList.toggle('active', tab==='prod');
+  document.getElementById('tabDesp').classList.toggle('active', tab==='desp');
+  document.getElementById('tabPend').classList.toggle('active', tab==='pend');
+  if (tab==='pend') renderPending();
+  if (tab==='desp') { const orders = loadOrders().filter(o=>o.fecha===document.getElementById('dateFilter').value); renderDesp(orders); }
+}
+
+// ══ PRINT ══
+function printProd() {
+  const fecha = document.getElementById('dateFilter').value;
+  document.getElementById('printHeaderProd').innerHTML = `<div style="display:flex;justify-content:space-between;align-items:flex-end;padding-bottom:10px;border-bottom:2px solid #1C3A4A;margin-bottom:14px">
+    <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;letter-spacing:3px;color:#1C3A4A">MARIANTONIA — LISTA DE PRODUCCIÓN</div>
+    <div style="font-size:11px;color:#6B7280;margin-top:2px">${formatDate(fecha)}</div></div>
+    <div style="font-size:11px;color:#6B7280">Impreso: ${new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'})}</div>
+  </div>`;
+  document.getElementById('fabProdView').classList.add('active');
+  document.getElementById('fabDespView').classList.remove('active');
+  document.getElementById('fabPendView').classList.remove('active');
+  window.print();
+}
+
+function printDesp() {
+  const fecha = document.getElementById('dateFilter').value;
+  const orders = loadOrders().filter(o => o.fecha === fecha);
+  const disp = loadDispatch();
+  const printDiv = document.createElement('div');
+  printDiv.id = 'despPrintView';
+  printDiv.style.display = 'none';
+  let html = `<div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:22px;letter-spacing:3px;color:#1C3A4A;border-bottom:2px solid #1C3A4A;padding-bottom:8px;margin-bottom:16px">MARIANTONIA — DESPACHO · ${formatDate(fecha)}</div>`;
+  orders.forEach(order => {
+    const dispItems = order.items.filter(i => { const k = dispatchKey(fecha, order.sucursal, i.cat, i.name); const d = disp[k] || {}; return !d.cancelled; });
+    if (!dispItems.length) return;
+    html += `<div style="margin-bottom:20px"><div style="background:#1C3A4A;color:white;padding:8px 14px;border-radius:6px 6px 0 0;font-size:16px;font-weight:700;letter-spacing:2px;text-transform:uppercase">${SUC_NAMES[order.sucursal]}</div>`;
+    const bycat = {};
+    dispItems.forEach(i => { if (!bycat[i.cat]) bycat[i.cat] = []; bycat[i.cat].push(i); });
+    Object.entries(bycat).forEach(([cat, items]) => {
+      html += `<div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#6B7280;padding:6px 14px 3px;border-left:1px solid #D0DDE5;border-right:1px solid #D0DDE5;background:#F8FAFC">${cat}</div>`;
+      items.forEach(i => {
+        const k = dispatchKey(fecha, order.sucursal, i.cat, i.name);
+        const d = disp[k] || {};
+        const sendQty = d.send !== undefined ? d.send : i.qty;
+        const pendQty = d.pend || 0;
+        let note = '';
+        if (sendQty !== i.qty) note = ` <span style="color:#7A5C00">(pedido: ${i.qty})</span>`;
+        if (pendQty > 0) note += ` <span style="color:#7A5C00;font-size:11px">+${pendQty} pendiente</span>`;
+        html += `<div style="display:flex;justify-content:space-between;padding:8px 14px;border:1px solid #D0DDE5;border-top:none;font-size:13px"><span>${i.name}${note}</span><strong>${sendQty} ${i.unit}</strong></div>`;
+      });
+    });
+    if (order.comentarios) html += `<div style="border:1px solid #D0DDE5;border-top:none;padding:8px 14px;font-size:12px;color:#6B7280;font-style:italic">${order.comentarios}</div>`;
+    html += '</div>';
+  });
+  printDiv.innerHTML = html;
+  document.body.appendChild(printDiv);
+  document.body.classList.add('print-desp-mode');
+  window.print();
+  document.body.classList.remove('print-desp-mode');
+  document.body.removeChild(printDiv);
+}
+
+// ══ ADMIN PANEL ══
+function buildAdminPanel() {
+  const disabled = loadDisabled();
+  const byCategory = {};
+  PRODUCTS.forEach(p => { if (!byCategory[p.cat]) byCategory[p.cat] = []; byCategory[p.cat].push(p); });
+  let html = '';
+  Object.entries(byCategory).forEach(([cat, items]) => {
+    html += `<div class="admin-cat-label">${cat}</div>`;
+    items.forEach(p => {
+      html += `<div class="admin-item">
+        <span class="admin-item-name">${p.name}</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="adm-${p.idx}" ${!disabled.includes(p.idx) ? 'checked' : ''}>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>`;
+    });
+  });
+  document.getElementById('adminProductList').innerHTML = html;
+  const pins = loadPins();
+  let pinHtml = Object.entries(SUC_NAMES).map(([key, name]) => `
+    <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #F0F4F7">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;color:#1C3A4A;margin-bottom:10px">${name}</div>
+      <div class="pin-change-row">
+        <div>
+          <label style="display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:4px">Nuevo PIN</label>
+          <input type="password" inputmode="numeric" maxlength="4" id="admin-pin-${key}" placeholder="••••"
+            style="width:120px;padding:9px 12px;border:1.5px solid #D0DDE5;border-radius:8px;font-family:inherit;font-size:16px;letter-spacing:4px;text-align:center;font-weight:700">
+        </div>
+        <button class="btn-save-pin" onclick="adminSavePin('${key}')">Guardar</button>
+      </div>
+      <div class="pin-feedback" id="pin-fb-${key}"></div>
+    </div>`).join('');
+  pinHtml += `<div style="margin-bottom:20px;padding-bottom:20px;border-top:2px solid #D0DDE5;padding-top:16px">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:1px;color:#1C3A4A;margin-bottom:10px">Fábrica (este PIN)</div>
+    <div class="pin-change-row">
+      <div>
+        <label style="display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#6B7280;font-weight:600;margin-bottom:4px">Nuevo PIN</label>
+        <input type="password" inputmode="numeric" maxlength="4" id="admin-pin-fabrica" placeholder="••••"
+          style="width:120px;padding:9px 12px;border:1.5px solid #D0DDE5;border-radius:8px;font-family:inherit;font-size:16px;letter-spacing:4px;text-align:center;font-weight:700">
+      </div>
+      <button class="btn-save-pin" onclick="adminSavePin('fabrica')">Guardar</button>
+    </div>
+    <div class="pin-feedback" id="pin-fb-fabrica"></div>
+  </div>`;
+  document.getElementById('adminPinList').innerHTML = pinHtml;
+}
+
+async function saveProducts() {
+  const disabled = PRODUCTS.filter(p => !document.getElementById('adm-' + p.idx)?.checked).map(p => p.idx);
+  await saveDisabled(disabled);
+  const btn = document.querySelector('.btn-save-products');
+  btn.textContent = '✓ Guardado';
+  setTimeout(() => btn.textContent = 'Guardar cambios de catálogo', 1800);
+}
+
+async function adminSavePin(key) {
+  const val = document.getElementById('admin-pin-' + key).value;
+  const fb = document.getElementById('pin-fb-' + key);
+  if (!/^\d{4}$/.test(val)) { fb.textContent = 'Ingresá exactamente 4 dígitos.'; fb.style.color = '#D0021B'; return; }
+  if (key === 'fabrica') {
+    await saveFabPin(val);
+  } else {
+    const pins = loadPins();
+    pins[key] = val;
+    await savePins(pins);
+  }
+  document.getElementById('admin-pin-' + key).value = '';
+  fb.textContent = '✓ PIN actualizado.';
+  fb.style.color = '#1A6640';
+  setTimeout(() => fb.textContent = '', 2000);
+}
+
+// ══ KEYBOARD PIN ══
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('screenPin').classList.contains('active')) return;
+  if (e.key >= '0' && e.key <= '9') pinPress(e.key);
+  else if (e.key === 'Backspace') pinDel();
+});
+
+// ══ INIT ══
+async function initApp() {
+  // Mostrar login de inmediato, sin esperar la API
+  showScreen('screenLogin');
+  // Cargar PINs en background
+  try {
+    const res = await api({ action: 'getPins' });
+    if (res && res.ok) { _cache.pins = res.data; _cache.fab_pin = res.fab_pin; }
+  } catch(e) {}
+}
+
+(async () => { await initApp(); })();
+</script>
+</body>
+</html>
