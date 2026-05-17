@@ -340,7 +340,7 @@ const PRODUCTS = [
 ];
 
 // ══ API CONFIG ══
-const API_URL = 'https://script.google.com/macros/s/AKfycbykpkh7eN70Hn17o8YL7M6SRxzDHD8dMWk90f3Xhq23Dx-JKDpvfuLxTSBsebLa5Tkr/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbzH5GWzB5PNyYvqmqWbtvYRkOv_q2q4HIiZ85ygfy5mkNxGSST8Seu_MK5tprrebz0u/exec';
 
 let _cache = { pins: {}, fab_pin: '0000', disabled: [], orders: [], pending: {}, dispatch: {}, dispatchFecha: null };
 
@@ -478,7 +478,9 @@ async function checkPin() {
 
 // ══ FACTORY ENTRY ══
 async function enterFactory() {
-  const fecha = new Date().toISOString().split('T')[0];
+  const hoy = new Date();
+  hoy.setDate(hoy.getDate() + 1);
+  const fecha = hoy.toISOString().split('T')[0];
   document.getElementById('dateFilter').value = fecha;
   // Mostrar dashboard inmediatamente con estado vacío
   showScreen('screenFactory');
