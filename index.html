@@ -728,7 +728,7 @@ async function enviarNotif() {
 async function cargarNotifEnviadas() {
   const container = document.getElementById('notifs-enviadas');
   try {
-    const r = await api({ action: 'getNotificaciones', sucursal: 'Todas' });
+    const r = await api({ action: 'getNotificacionesFabrica' });
     if (r.ok && r.notificaciones.length) {
       const hoy = r.notificaciones.filter(n => n.Fecha === F.fecha);
       if (hoy.length) {
