@@ -10,6 +10,7 @@
       --navy:       #1C3A4A;
       --navy-light: #254e64;
       --navy-pale:  #E8F0F4;
+      --sidebar-w:  220px;
       --cream:      #F5F4F0;
       --cream-dark: #ECEAE4;
       --white:      #FFFFFF;
@@ -33,15 +34,12 @@
       min-height: 100vh;
     }
 
+    /* ── SCREENS ───────────────────────────────── */
     .screen { display: none; }
     .screen.active { display: block; }
 
     /* ── LOADING ───────────────────────────────── */
-    .loading-overlay {
-      position: fixed; inset: 0;
-      background: rgba(28,58,74,0.55);
-      display: none; align-items: center; justify-content: center; z-index: 300;
-    }
+    .loading-overlay { position: fixed; inset: 0; background: rgba(28,58,74,0.55); display: none; align-items: center; justify-content: center; z-index: 500; }
     .loading-overlay.show { display: flex; }
     .loading-box { background: white; border-radius: 16px; padding: 28px 36px; text-align: center; }
     .loading-box p { font-size: 15px; font-weight: 600; color: var(--navy); margin-top: 12px; }
@@ -49,76 +47,154 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── TOAST ─────────────────────────────────── */
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--red); color: white; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; z-index: 400; white-space: nowrap; display: none; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--red); color: white; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; z-index: 600; white-space: nowrap; display: none; }
     .toast.show { display: block; }
     .toast.ok   { background: var(--green); }
 
     /* ── LOGIN ─────────────────────────────────── */
-    .login-header { background: var(--navy); width: 100%; padding: 36px 24px 28px; text-align: center; }
-    .login-logo   { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 800; color: white; letter-spacing: 2px; }
+    #scr-login { min-height: 100vh; display: flex; flex-direction: column; align-items: center; background: var(--cream); }
+    .login-header { background: var(--navy); width: 100%; padding: 40px 24px 32px; text-align: center; }
+    .login-logo   { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; color: white; letter-spacing: 2px; }
     .login-sub    { font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
-    .login-tag    { display: inline-block; margin-top: 12px; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; }
-    .login-card   { background: white; border-radius: 16px; border: 0.5px solid var(--border); width: calc(100% - 32px); max-width: 420px; margin: 24px auto; }
-    .login-body   { padding: 24px; }
-    .form-label   { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .login-tag    { display: inline-block; margin-top: 14px; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; }
+    .login-card   { background: white; border-radius: 16px; border: 0.5px solid var(--border); width: calc(100% - 32px); max-width: 400px; margin: 28px auto; }
+    .login-body   { padding: 28px; }
+    .form-label   { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
     .pin-wrap     { position: relative; }
-    .pin-input    { width: 100%; background: var(--cream); border: 1.5px solid var(--navy); border-radius: 10px; padding: 14px 48px 14px 16px; font-size: 24px; font-family: 'Barlow', sans-serif; font-weight: 700; letter-spacing: 10px; color: var(--navy); outline: none; }
+    .pin-input    { width: 100%; background: var(--cream); border: 1.5px solid var(--navy); border-radius: 10px; padding: 14px 48px 14px 16px; font-size: 26px; font-family: 'Barlow', sans-serif; font-weight: 700; letter-spacing: 12px; color: var(--navy); outline: none; }
     .pin-input:focus { background: white; }
     .pin-eye      { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 18px; color: var(--text-muted); }
     .pin-hint     { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 8px; }
-    .btn-primary  { width: 100%; background: var(--navy); color: white; border: none; border-radius: 10px; padding: 15px; font-size: 16px; font-weight: 700; font-family: 'Barlow', sans-serif; cursor: pointer; margin-top: 16px; }
+    .btn-primary  { width: 100%; background: var(--navy); color: white; border: none; border-radius: 10px; padding: 15px; font-size: 16px; font-weight: 700; font-family: 'Barlow', sans-serif; cursor: pointer; margin-top: 16px; transition: background 0.15s; }
     .btn-primary:hover    { background: var(--navy-light); }
     .btn-primary:disabled { background: var(--border); color: var(--text-muted); cursor: default; }
 
-    /* ── APP HEADER ────────────────────────────── */
-    .app-header { background: var(--navy); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-    .app-header h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: white; letter-spacing: 1px; }
-    .app-header p  { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 1px; }
-    .btn-logout    { background: rgba(255,255,255,0.1); border: 0.5px solid rgba(255,255,255,0.2); color: white; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; font-family: 'Barlow', sans-serif; cursor: pointer; }
+    /* ══════════════════════════════════════════════
+       DASHBOARD LAYOUT — sidebar + content
+    ══════════════════════════════════════════════ */
+    #scr-app { display: none; min-height: 100vh; }
+    #scr-app.active { display: flex; }
 
-    /* ── MAIN TABS ─────────────────────────────── */
-    .main-tabs { display: flex; background: white; border-bottom: 1px solid var(--border); position: sticky; top: 52px; z-index: 90; }
-    .main-tab  { flex: 1; padding: 13px 16px; font-size: 14px; font-weight: 600; font-family: 'Barlow', sans-serif; color: var(--text-muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; margin-bottom: -1px; transition: all 0.15s; }
-    .main-tab:hover  { color: var(--navy); }
-    .main-tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+    /* ── SIDEBAR ────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-height: 100vh;
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
 
-    /* ── PAGE ──────────────────────────────────── */
-    .page { display: none; padding: 16px; }
+    .sidebar-brand {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .sidebar-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 800; color: white; letter-spacing: 1.5px; line-height: 1; }
+    .sidebar-sub  { font-size: 10px; color: rgba(255,255,255,0.4); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; }
+    .sidebar-fecha { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 8px; }
+
+    .sidebar-nav  { padding: 16px 0; flex: 1; }
+    .nav-section-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: rgba(255,255,255,0.3);
+      padding: 12px 20px 6px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 20px; cursor: pointer;
+      border-left: 3px solid transparent;
+      transition: all 0.15s; text-decoration: none;
+    }
+    .nav-item:hover  { background: rgba(255,255,255,0.07); }
+    .nav-item.active { background: rgba(255,255,255,0.1); border-left-color: white; }
+    .nav-icon  { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+    .nav-label { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.75); }
+    .nav-item.active .nav-label { color: white; }
+    .nav-item.disabled { opacity: 0.35; cursor: not-allowed; }
+    .nav-badge {
+      margin-left: auto; background: var(--red); color: white;
+      font-size: 10px; font-weight: 800; min-width: 18px; height: 18px;
+      border-radius: 9px; padding: 0 5px;
+      display: none; align-items: center; justify-content: center;
+    }
+    .nav-badge.show { display: flex; }
+    .nav-soon {
+      margin-left: auto; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.5px; color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+    }
+
+    .sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .btn-logout-side {
+      width: 100%; background: rgba(255,255,255,0.08);
+      border: 0.5px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.6); border-radius: 8px;
+      padding: 10px; font-size: 12px; font-weight: 600;
+      font-family: 'Barlow', sans-serif; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-logout-side:hover { background: rgba(255,255,255,0.15); color: white; }
+
+    /* ── CONTENT AREA ───────────────────────────── */
+    .content { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+    .content-header {
+      background: white; border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .content-header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 800; color: var(--navy); letter-spacing: 0.5px; }
+    .content-header p  { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+
+    .page { display: none; padding: 20px 24px; }
     .page.active { display: block; }
 
-    /* ── SECTION HEADER ────────────────────────── */
-    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+    /* ── SECTION TITLE ──────────────────────────── */
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
 
-    /* ── PRODUCCION ────────────────────────────── */
-    .prod-card { background: white; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 10px; overflow: hidden; }
-    .prod-cat-header { background: #F0F4F7; border-left: 3px solid var(--navy); padding: 10px 16px; }
+    /* ── PRODUCCION ─────────────────────────────── */
+    .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; margin-bottom: 20px; }
+    .prod-card { background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+    .prod-cat-header { background: #F0F4F7; border-left: 3px solid var(--navy); padding: 9px 14px; }
     .prod-cat-header h3 { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 1.5px; text-transform: uppercase; }
-    .prod-item { padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #F3F4F6; }
-    .prod-item:first-child { border-top: none; }
-    .prod-name  { font-size: 15px; font-weight: 600; color: var(--text); }
+    .prod-item { padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #F3F4F6; }
+    .prod-name   { font-size: 14px; font-weight: 600; color: var(--text); }
     .prod-unidad { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
-    .prod-total { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; color: var(--navy); }
+    .prod-total  { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; color: var(--navy); }
     .prod-total-unit { font-size: 12px; color: var(--text-muted); text-align: right; }
 
-    /* ── PRINT BUTTON ──────────────────────────── */
-    .print-bar { background: white; border-top: 1px solid var(--border); padding: 12px 16px; position: sticky; bottom: 0; box-shadow: 0 -4px 20px rgba(28,58,74,0.08); }
-    .btn-print { width: 100%; max-width: 480px; display: block; margin: 0 auto; background: var(--navy); color: white; border: none; border-radius: 50px; padding: 14px 32px; font-size: 15px; font-weight: 700; font-family: 'Barlow', sans-serif; cursor: pointer; letter-spacing: 0.3px; }
+    /* ── PRINT BUTTON ───────────────────────────── */
+    .btn-print { background: var(--navy); color: white; border: none; border-radius: 50px; padding: 12px 28px; font-size: 14px; font-weight: 700; font-family: 'Barlow', sans-serif; cursor: pointer; transition: all 0.15s; }
     .btn-print:hover { background: var(--navy-light); }
 
-    /* ── EMPTY STATE ───────────────────────────── */
+    /* ── EMPTY STATE ─────────────────────────────── */
     .empty-state { text-align: center; padding: 48px 24px; color: var(--text-muted); font-size: 14px; }
-    .empty-state .es-icon { font-size: 36px; margin-bottom: 12px; }
+    .empty-state .es-icon { font-size: 40px; margin-bottom: 12px; }
 
-    /* ── LOGISTICA SUBTABS ─────────────────────── */
-    .suc-tabs { display: flex; background: white; border-bottom: 1px solid var(--border); gap: 0; }
-    .suc-tab  { flex: 1; padding: 11px 8px; font-size: 13px; font-weight: 600; font-family: 'Barlow', sans-serif; color: var(--text-muted); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; margin-bottom: -1px; transition: all 0.15s; text-align: center; }
-    .suc-tab:hover  { color: var(--navy); }
-    .suc-tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+    /* ── LOGISTICA SUB-TABS ──────────────────────── */
+    .suc-tabs { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+    .suc-tab  {
+      padding: 8px 20px; border-radius: 8px;
+      font-size: 13px; font-weight: 700; font-family: 'Barlow', sans-serif;
+      color: var(--text-muted); background: white;
+      border: 1px solid var(--border); cursor: pointer; transition: all 0.15s;
+    }
+    .suc-tab:hover  { border-color: var(--navy); color: var(--navy); }
+    .suc-tab.active { background: var(--navy); color: white; border-color: var(--navy); }
     .suc-panel { display: none; }
     .suc-panel.active { display: block; }
 
-    /* ── DESPACHO ──────────────────────────────── */
-    .despacho-section { background: white; border-radius: 12px; border: 1px solid var(--border); margin: 12px 0; overflow: hidden; }
+    /* ── DESPACHO ────────────────────────────────── */
+    .despacho-section { background: white; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 12px; overflow: hidden; }
     .despacho-section-header { background: #F0F4F7; border-left: 3px solid var(--navy); padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; }
     .despacho-section-header h3 { font-size: 11px; font-weight: 700; color: var(--navy); letter-spacing: 1.5px; text-transform: uppercase; }
     .pend-tag { background: var(--amber-bg); color: #92600A; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -127,76 +203,112 @@
     .desp-row-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
     .desp-nombre { font-size: 14px; font-weight: 600; color: var(--text); }
     .desp-pedido { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-    .desp-precio { font-size: 12px; color: var(--text-muted); text-align: right; }
-
+    .desp-precio { font-size: 12px; color: var(--text-muted); text-align: right; white-space: nowrap; }
     .desp-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
     .desp-qty-wrap { display: flex; align-items: center; gap: 6px; }
-    .desp-qty-label { font-size: 11px; color: var(--text-muted); font-weight: 600; min-width: 72px; }
-    .qty-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--cream); font-size: 18px; font-weight: 500; color: var(--navy); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .desp-qty-label { font-size: 11px; color: var(--text-muted); font-weight: 600; min-width: 80px; }
+    .qty-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border); background: var(--cream); font-size: 18px; font-weight: 500; color: var(--navy); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.1s; }
     .qty-btn:hover { background: var(--navy-pale); border-color: var(--navy); }
     .qty-input { width: 52px; text-align: center; border: 1px solid var(--border); border-radius: 8px; padding: 6px 2px; font-size: 15px; font-weight: 700; font-family: 'Barlow', sans-serif; color: var(--navy); background: white; outline: none; }
     .qty-input:focus { border-color: var(--navy); }
-
-    .estado-select { flex: 1; min-width: 140px; }
+    .estado-select { flex: 1; min-width: 150px; }
     .estado-select label { font-size: 11px; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 4px; }
     .estado-btns { display: flex; gap: 6px; }
     .btn-estado { flex: 1; padding: 7px 8px; border-radius: 8px; font-size: 12px; font-weight: 700; font-family: 'Barlow', sans-serif; border: 1.5px solid var(--border); background: white; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
-    .btn-estado.selected-completo   { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
-    .btn-estado.selected-pendiente  { background: var(--amber-bg); border-color: #E8A020; color: #92600A; }
-    .btn-estado.selected-cancelado  { background: var(--red-bg); border-color: var(--red); color: #791F1F; }
-
+    .btn-estado.selected-completo  { background: #EAF3DE; border-color: #3B6D11; color: #27500A; }
+    .btn-estado.selected-pendiente { background: var(--amber-bg); border-color: var(--amber); color: #92600A; }
+    .btn-estado.selected-cancelado { background: var(--red-bg); border-color: var(--red); color: #791F1F; }
     .desp-subtotal { font-size: 12px; color: var(--text-muted); text-align: right; margin-top: 6px; }
     .desp-subtotal span { font-weight: 700; color: var(--navy); }
 
-    /* ── CONFIRMAR DESPACHO ────────────────────── */
-    .confirmar-bar { background: white; border-top: 1px solid var(--border); padding: 12px 16px; position: sticky; bottom: 0; box-shadow: 0 -4px 20px rgba(28,58,74,0.08); }
-    .confirmar-totales { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
-    .confirmar-label  { font-size: 13px; color: var(--text-muted); }
-    .confirmar-amount { font-size: 22px; font-weight: 800; color: var(--navy); font-family: 'Barlow Condensed', sans-serif; }
-    .btn-confirmar { width: 100%; max-width: 480px; display: block; margin: 0 auto; background: var(--green-dark); color: white; border: none; border-radius: 50px; padding: 14px 32px; font-size: 15px; font-weight: 700; font-family: 'Barlow', sans-serif; cursor: pointer; }
+    /* ── CONFIRMAR BAR ───────────────────────────── */
+    .confirmar-bar { background: white; border-top: 1px solid var(--border); padding: 14px 24px; position: sticky; bottom: 0; box-shadow: 0 -4px 20px rgba(28,58,74,0.08); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .confirmar-info .confirmar-label  { font-size: 12px; color: var(--text-muted); }
+    .confirmar-info .confirmar-amount { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 800; color: var(--navy); }
+    .btn-confirmar { background: var(--green-dark); color: white; border: none; border-radius: 50px; padding: 13px 28px; font-size: 14px; font-weight: 700; font-family: 'Barlow', sans-serif; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
     .btn-confirmar:hover    { background: #054030; }
     .btn-confirmar:disabled { background: var(--border); color: var(--text-muted); cursor: default; }
 
-    /* ── NOTIFICACIONES FABRICA ────────────────── */
-    .notif-fab-bar { background: white; border-bottom: 1px solid var(--border); }
-    .notif-fab-form { padding: 16px; border-top: 1px solid #F3F4F6; display: none; }
-    .notif-fab-form.open { display: block; }
-    .notif-fab-form input, .notif-fab-form textarea, .notif-fab-form select {
+    /* ── AVISOS ──────────────────────────────────── */
+    .aviso-form-card { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 20px; margin-bottom: 16px; }
+    .aviso-form-card select,
+    .aviso-form-card input,
+    .aviso-form-card textarea {
       width: 100%; box-sizing: border-box;
       border: 1px solid var(--border); border-radius: 10px;
       padding: 11px 14px; font-size: 14px;
       font-family: 'Barlow', sans-serif; color: var(--text);
       background: var(--cream); outline: none; margin-bottom: 10px;
     }
-    .notif-fab-form input:focus, .notif-fab-form textarea:focus, .notif-fab-form select:focus { background: white; border-color: var(--navy); }
-    .notif-fab-form textarea { resize: none; height: 80px; }
-    .btn-enviar-notif { background: var(--navy); color: white; border: none; border-radius: 10px; padding: 12px 24px; font-size: 14px; font-weight: 700; font-family: 'Barlow', sans-serif; cursor: pointer; width: 100%; }
+    .aviso-form-card textarea { resize: none; height: 90px; }
+    .aviso-form-card select:focus,
+    .aviso-form-card input:focus,
+    .aviso-form-card textarea:focus { background: white; border-color: var(--navy); }
+    .btn-enviar-notif { background: var(--navy); color: white; border: none; border-radius: 50px; padding: 12px 28px; font-size: 14px; font-weight: 700; font-family: 'Barlow', sans-serif; cursor: pointer; transition: background 0.15s; }
+    .btn-enviar-notif:hover { background: var(--navy-light); }
+    .aviso-item { background: white; border-radius: 10px; border: 1px solid var(--border); padding: 12px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+    .aviso-item-body .ai-titulo { font-size: 13px; font-weight: 700; color: var(--navy); }
+    .aviso-item-body .ai-msg    { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+    .aviso-item-meta { text-align: right; flex-shrink: 0; }
+    .aviso-item-meta .ai-dest   { font-size: 11px; font-weight: 700; color: var(--text-muted); background: var(--cream); padding: 2px 8px; border-radius: 20px; }
 
-    /* ── PRINT STYLES ──────────────────────────── */
+    /* ── MOBILE ──────────────────────────────────── */
+    .mobile-topbar { display: none; }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      #scr-app.active { flex-direction: column; }
+
+      .mobile-topbar {
+        display: flex; background: var(--navy);
+        padding: 12px 16px;
+        justify-content: space-between; align-items: center;
+        position: sticky; top: 0; z-index: 200;
+      }
+      .mobile-topbar .mtb-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; color: white; letter-spacing: 1px; }
+      .mobile-topbar .mtb-fecha { font-size: 11px; color: rgba(255,255,255,0.5); }
+      .btn-logout-mobile { background: rgba(255,255,255,0.1); border: none; color: white; border-radius: 6px; padding: 7px 12px; font-size: 12px; font-weight: 600; font-family: 'Barlow', sans-serif; cursor: pointer; }
+
+      .mobile-nav {
+        display: flex; background: white;
+        border-bottom: 1px solid var(--border);
+        overflow-x: auto; position: sticky; top: 48px; z-index: 190;
+      }
+      .mobile-nav-item {
+        flex-shrink: 0; padding: 12px 16px;
+        font-size: 13px; font-weight: 600; font-family: 'Barlow', sans-serif;
+        color: var(--text-muted); border-bottom: 2px solid transparent;
+        cursor: pointer; white-space: nowrap;
+      }
+      .mobile-nav-item.active { color: var(--navy); border-bottom-color: var(--navy); }
+
+      .content-header { display: none; }
+      .page { padding: 12px 16px; }
+      .confirmar-bar { padding: 12px 16px; }
+      .prod-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── PRINT ───────────────────────────────────── */
     @media print {
-      .app-header, .main-tabs, .print-bar, .confirmar-bar, .btn-print, .desp-controls, .notif-fab-bar { display: none !important; }
+      .sidebar, .mobile-topbar, .mobile-nav, .content-header,
+      .btn-print, .confirmar-bar, .desp-controls { display: none !important; }
       body { background: white; }
       .page { display: block !important; padding: 0; }
-      .prod-card, .despacho-section { break-inside: avoid; border: 1px solid #ccc; margin-bottom: 8px; }
-      .print-section-break { page-break-before: always; }
-      .print-hide { display: none !important; }
+      .prod-card, .despacho-section { break-inside: avoid; }
+      .print-break { page-break-before: always; }
     }
   </style>
 </head>
 <body>
 
 <div class="loading-overlay" id="loading">
-  <div class="loading-box">
-    <div class="spinner"></div>
-    <p id="loading-msg">Cargando...</p>
-  </div>
+  <div class="loading-box"><div class="spinner"></div><p id="loading-msg">Cargando...</p></div>
 </div>
-
 <div class="toast" id="toast"></div>
 
-<!-- ══════════════════════════════════════════ -->
-<!-- PANTALLA 1: LOGIN                         -->
-<!-- ══════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- LOGIN                                         -->
+<!-- ══════════════════════════════════════════════ -->
 <div class="screen active" id="scr-login">
   <div class="login-header">
     <div class="login-logo">MARIANTONIA</div>
@@ -207,9 +319,7 @@
     <div class="login-body">
       <label class="form-label">PIN de acceso</label>
       <div class="pin-wrap">
-        <input class="pin-input" id="pin" type="password"
-          inputmode="numeric" maxlength="4" placeholder="····"
-          autocomplete="off" oninput="onPin()" onkeydown="if(event.key==='Enter') doLogin()"/>
+        <input class="pin-input" id="pin" type="password" inputmode="numeric" maxlength="4" placeholder="····" autocomplete="off" oninput="onPin()" onkeydown="if(event.key==='Enter') doLogin()"/>
         <button class="pin-eye" onclick="togglePin()" type="button">👁</button>
       </div>
       <p class="pin-hint">Teclado físico o numérico</p>
@@ -218,185 +328,198 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════ -->
-<!-- PANTALLA 2: APP                           -->
-<!-- ══════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════ -->
+<!-- DASHBOARD                                     -->
+<!-- ══════════════════════════════════════════════ -->
 <div class="screen" id="scr-app">
-  <div class="app-header">
-    <div>
-      <h2>FÁBRICA</h2>
-      <p id="hdr-fecha">—</p>
-    </div>
-    <button class="btn-logout" onclick="logout()">Salir</button>
-  </div>
 
-  <div class="main-tabs">
-    <button class="main-tab active" onclick="switchTab('produccion')">Producción</button>
-    <button class="main-tab" onclick="switchTab('logistica')">Logística</button>
-    <button class="main-tab" onclick="switchTab('notificaciones')">Avisos</button>
-  </div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">MARIANTONIA</div>
+      <div class="sidebar-sub">Portal Fábrica</div>
+      <div class="sidebar-fecha" id="sb-fecha">—</div>
+    </div>
 
-  <!-- ── PRODUCCIÓN ── -->
-  <div class="page active" id="page-produccion">
-    <div id="prod-content">
-      <div class="empty-state"><div class="es-icon">⏳</div>Cargando pedidos...</div>
-    </div>
-    <div style="height:80px"></div>
-    <div class="print-bar print-hide">
-      <button class="btn-print" onclick="imprimir()">🖨 Imprimir producción completa</button>
-    </div>
-  </div>
-
-  <!-- ── LOGÍSTICA ── -->
-  <div class="page" id="page-logistica">
-    <div class="suc-tabs" style="margin: -16px -16px 0; position: sticky; top: 104px; z-index: 80;">
-      <button class="suc-tab active" onclick="switchSuc('Bernal')">Bernal</button>
-      <button class="suc-tab" onclick="switchSuc('Quilmes')">Quilmes</button>
-      <button class="suc-tab" onclick="switchSuc('Don Bosco')">Don Bosco</button>
-    </div>
-    <div style="height: 16px"></div>
-    <div id="suc-Bernal"    class="suc-panel active"></div>
-    <div id="suc-Quilmes"   class="suc-panel"></div>
-    <div id="suc-Don Bosco" class="suc-panel"></div>
-    <div style="height:100px"></div>
-    <div class="confirmar-bar print-hide" id="confirmar-bar">
-      <div class="confirmar-totales">
-        <span class="confirmar-label">Total a cobrar hoy</span>
-        <span class="confirmar-amount" id="confirmar-amount">$0</span>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Producción</div>
+      <div class="nav-item active" onclick="switchPage('produccion')" id="nav-produccion">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Producción del día</span>
       </div>
-      <button class="btn-confirmar" id="btn-confirmar" onclick="confirmarDespacho()">Confirmar despacho</button>
+
+      <div class="nav-section-label">Distribución</div>
+      <div class="nav-item" onclick="switchPage('logistica')" id="nav-logistica">
+        <span class="nav-icon">🚚</span>
+        <span class="nav-label">Logística</span>
+      </div>
+
+      <div class="nav-section-label">Comunicación</div>
+      <div class="nav-item" onclick="switchPage('avisos')" id="nav-avisos">
+        <span class="nav-icon">📢</span>
+        <span class="nav-label">Avisos</span>
+        <span class="nav-badge" id="nav-badge-avisos"></span>
+      </div>
+
+      <div class="nav-section-label">Próximamente</div>
+      <div class="nav-item disabled">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">Reportes</span>
+        <span class="nav-soon">Pronto</span>
+      </div>
+      <div class="nav-item disabled">
+        <span class="nav-icon">📦</span>
+        <span class="nav-label">Historial</span>
+        <span class="nav-soon">Pronto</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout-side" onclick="logout()">← Cerrar sesión</button>
     </div>
+  </aside>
+
+  <!-- MOBILE TOP BAR -->
+  <div class="mobile-topbar">
+    <div>
+      <div class="mtb-logo">FÁBRICA</div>
+      <div class="mtb-fecha" id="mtb-fecha">—</div>
+    </div>
+    <button class="btn-logout-mobile" onclick="logout()">Salir</button>
+  </div>
+  <div class="mobile-nav">
+    <div class="mobile-nav-item active" onclick="switchPage('produccion')">📋 Producción</div>
+    <div class="mobile-nav-item" onclick="switchPage('logistica')">🚚 Logística</div>
+    <div class="mobile-nav-item" onclick="switchPage('avisos')">📢 Avisos</div>
   </div>
 
-  <!-- ── AVISOS (NOTIFICACIONES) ── -->
-  <div class="page" id="page-notificaciones">
-    <p class="section-title">Nuevo aviso</p>
-    <div style="background:white;border-radius:12px;border:1px solid var(--border);padding:16px;margin-bottom:16px;">
-      <select id="notif-dest" style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-size:14px;font-family:'Barlow',sans-serif;color:var(--text);background:var(--cream);margin-bottom:10px;outline:none;">
-        <option value="Todas">Todas las sucursales</option>
-        <option value="Bernal">Solo Bernal</option>
-        <option value="Quilmes">Solo Quilmes</option>
-        <option value="Don Bosco">Solo Don Bosco</option>
-      </select>
-      <input id="notif-titulo" type="text" placeholder="Título del aviso..." style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-size:14px;font-family:'Barlow',sans-serif;color:var(--text);background:var(--cream);margin-bottom:10px;outline:none;"/>
-      <textarea id="notif-msg" placeholder="Mensaje..." style="width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:10px;padding:11px 14px;font-size:14px;font-family:'Barlow',sans-serif;color:var(--text);background:var(--cream);resize:none;height:90px;margin-bottom:10px;outline:none;"></textarea>
-      <button class="btn-enviar-notif" onclick="enviarNotif()">Enviar aviso</button>
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="content-header">
+      <div>
+        <h1 id="content-title">Producción del día</h1>
+        <p id="content-sub">Productos a elaborar hoy</p>
+      </div>
+      <div id="content-actions"></div>
     </div>
-    <p class="section-title">Avisos enviados hoy</p>
-    <div id="notifs-enviadas">
-      <div class="empty-state" style="padding:24px"><div class="es-icon">📭</div>Sin avisos enviados hoy</div>
+
+    <!-- ── PRODUCCIÓN ── -->
+    <div class="page active" id="page-produccion">
+      <div id="prod-content">
+        <div class="empty-state"><div class="es-icon">⏳</div>Cargando pedidos...</div>
+      </div>
+      <div style="height:24px"></div>
     </div>
-  </div>
-</div>
+
+    <!-- ── LOGÍSTICA ── -->
+    <div class="page" id="page-logistica">
+      <div class="suc-tabs">
+        <button class="suc-tab active" onclick="switchSuc('Bernal')">Bernal</button>
+        <button class="suc-tab" onclick="switchSuc('Quilmes')">Quilmes</button>
+        <button class="suc-tab" onclick="switchSuc('Don Bosco')">Don Bosco</button>
+      </div>
+      <div id="suc-Bernal"     class="suc-panel active"></div>
+      <div id="suc-Quilmes"    class="suc-panel"></div>
+      <div id="suc-Don Bosco"  class="suc-panel"></div>
+      <div style="height:80px"></div>
+      <div class="confirmar-bar print-hide">
+        <div class="confirmar-info">
+          <div class="confirmar-label">Total a cobrar hoy</div>
+          <div class="confirmar-amount" id="confirmar-amount">$0</div>
+        </div>
+        <button class="btn-confirmar" id="btn-confirmar" onclick="confirmarDespacho()">Confirmar despacho</button>
+      </div>
+    </div>
+
+    <!-- ── AVISOS ── -->
+    <div class="page" id="page-avisos">
+      <p class="section-title" style="margin-bottom:12px">Nuevo aviso para las sucursales</p>
+      <div class="aviso-form-card">
+        <select id="notif-dest">
+          <option value="Todas">Todas las sucursales</option>
+          <option value="Bernal">Solo Bernal</option>
+          <option value="Quilmes">Solo Quilmes</option>
+          <option value="Don Bosco">Solo Don Bosco</option>
+        </select>
+        <input id="notif-titulo" type="text" placeholder="Título del aviso..."/>
+        <textarea id="notif-msg" placeholder="Mensaje..."></textarea>
+        <button class="btn-enviar-notif" onclick="enviarNotif()">Enviar aviso</button>
+      </div>
+      <p class="section-title" style="margin-bottom:12px">Enviados hoy</p>
+      <div id="notifs-enviadas">
+        <div class="empty-state" style="padding:24px"><div class="es-icon">📭</div>Sin avisos enviados hoy</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /scr-app -->
 
 <script>
-// ─────────────────────────────────────────────────────
-// CONFIG
-// ─────────────────────────────────────────────────────
 const API = 'https://script.google.com/macros/s/AKfycbzNyVmX1bDoDjLbEMq8l7O-aiPUl6PhC3DsrpkrRgt0navysSZZjWNykstvm97Vl8xj/exec';
 const SUCURSALES = ['Bernal', 'Quilmes', 'Don Bosco'];
 
-// ─────────────────────────────────────────────────────
-// ESTADO
-// ─────────────────────────────────────────────────────
 const F = {
-  fecha:       fechaHoy(),
-  dashboard:   null,
-  despachos:   {},   // { sucursal: { prod_id: { cant, estado } } }
-  sucActiva:   'Bernal'
+  fecha:     fechaHoy(),
+  dashboard: null,
+  despachos: {},
+  sucActiva: 'Bernal'
 };
 
-// ─────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────
+const PAGES = {
+  produccion: { title: 'Producción del día', sub: 'Productos a elaborar hoy' },
+  logistica:  { title: 'Logística',          sub: 'Despacho por sucursal' },
+  avisos:     { title: 'Avisos',             sub: 'Comunicaciones a las sucursales' }
+};
+
+// ─── HELPERS ─────────────────────────────────
 function fechaHoy() {
   return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Argentina/Buenos_Aires' });
 }
-
 function fechaLegible(f) {
-  const [y, m, d] = f.split('-');
+  const [y,m,d] = f.split('-');
   const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   return `${parseInt(d)} de ${meses[parseInt(m)-1]} de ${y}`;
 }
-
-function pesos(n) {
-  return '$' + Number(n).toLocaleString('es-AR');
-}
-
+function pesos(n) { return '$' + Number(n).toLocaleString('es-AR'); }
 async function api(params) {
   const url = new URL(API);
   Object.entries(params).forEach(([k,v]) => url.searchParams.set(k, String(v)));
   const r = await fetch(url.toString(), { redirect: 'follow' });
   return r.json();
 }
-
-function loading(msg) {
-  document.getElementById('loading-msg').textContent = msg || 'Cargando...';
-  document.getElementById('loading').classList.add('show');
-}
+function loading(msg) { document.getElementById('loading-msg').textContent = msg||'Cargando...'; document.getElementById('loading').classList.add('show'); }
 function stopLoading() { document.getElementById('loading').classList.remove('show'); }
+function toast(msg, ok) { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast show'+(ok?' ok':''); setTimeout(()=>t.className='toast',3500); }
+function screen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
 
-function toast(msg, ok) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show' + (ok ? ' ok' : '');
-  setTimeout(() => t.className = 'toast', 3500);
-}
-
-function screen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-// ─────────────────────────────────────────────────────
-// LOGIN
-// ─────────────────────────────────────────────────────
-function onPin() {
-  document.getElementById('btn-login').disabled = document.getElementById('pin').value.length < 4;
-}
-
-function togglePin() {
-  const p = document.getElementById('pin');
-  p.type = p.type === 'password' ? 'text' : 'password';
-}
-
+// ─── LOGIN ────────────────────────────────────
+function onPin() { document.getElementById('btn-login').disabled = document.getElementById('pin').value.length < 4; }
+function togglePin() { const p=document.getElementById('pin'); p.type=p.type==='password'?'text':'password'; }
 async function doLogin() {
   const pin = document.getElementById('pin').value;
   if (pin.length < 4) return;
   loading('Verificando...');
   try {
-    const r = await api({ action: 'verificarPin', entidad: 'Fabrica', pin });
-    if (r.ok) {
-      await cargarDashboard();
-    } else {
-      stopLoading();
-      toast('PIN incorrecto');
-      document.getElementById('pin').value = '';
-      document.getElementById('btn-login').disabled = true;
-    }
-  } catch {
-    stopLoading();
-    toast('Sin conexión. Revisá el internet.');
-  }
+    const r = await api({ action:'verificarPin', entidad:'Fabrica', pin });
+    if (r.ok) { await cargarDashboard(); }
+    else { stopLoading(); toast('PIN incorrecto'); document.getElementById('pin').value=''; document.getElementById('btn-login').disabled=true; }
+  } catch { stopLoading(); toast('Sin conexión. Revisá el internet.'); }
 }
 
-// ─────────────────────────────────────────────────────
-// DASHBOARD
-// ─────────────────────────────────────────────────────
+// ─── DASHBOARD ───────────────────────────────
 async function cargarDashboard() {
   loading('Cargando pedidos del día...');
   try {
-    const r = await api({ action: 'getDashboardFabrica', fecha: F.fecha });
+    const r = await api({ action:'getDashboardFabrica', fecha: F.fecha });
     if (!r.ok) throw new Error(r.error);
     F.dashboard = r;
     inicializarDespachos();
-  } catch(e) {
-    stopLoading();
-    toast('Error al cargar: ' + e.message);
-    return;
-  }
+  } catch(e) { stopLoading(); toast('Error al cargar: '+e.message); return; }
   stopLoading();
-  document.getElementById('hdr-fecha').textContent = fechaLegible(F.fecha);
+  const fl = fechaLegible(F.fecha);
+  document.getElementById('sb-fecha').textContent = fl;
+  document.getElementById('mtb-fecha').textContent = fl;
   renderProduccion();
   SUCURSALES.forEach(s => renderLogistica(s));
   screen('scr-app');
@@ -406,113 +529,54 @@ function inicializarDespachos() {
   SUCURSALES.forEach(suc => {
     F.despachos[suc] = {};
     const dist = F.dashboard.distribucion[suc];
-
-    // Pedido del día
-    (dist.pedido_hoy || []).forEach(item => {
+    (dist.pedido_hoy||[]).forEach(item => {
       const key = item.ID_Linea || item.ID_Producto;
-      F.despachos[suc][key] = {
-        cant:    Number(item.Cantidad),
-        estado:  'completo',
-        item,
-        esPendiente: false
-      };
+      F.despachos[suc][key] = { cant: Number(item.Cantidad), estado: 'completo', item, esPendiente: false };
     });
-
-    // Pendientes activos
-    (dist.pendientes || []).forEach(item => {
+    (dist.pendientes||[]).forEach(item => {
       const key = 'PEND_' + item.ID_Pendiente;
-      F.despachos[suc][key] = {
-        cant:    Number(item.Cantidad_Pendiente),
-        estado:  'completo',
-        item,
-        esPendiente: true
-      };
+      F.despachos[suc][key] = { cant: Number(item.Cantidad_Pendiente), estado: 'completo', item, esPendiente: true };
     });
   });
 }
 
-// ─────────────────────────────────────────────────────
-// PRODUCCIÓN
-// ─────────────────────────────────────────────────────
+// ─── PRODUCCIÓN ──────────────────────────────
 function renderProduccion() {
   const container = document.getElementById('prod-content');
   const prod = F.dashboard.produccion || [];
-
-  if (!prod.length) {
-    container.innerHTML = '<div class="empty-state"><div class="es-icon">🍝</div>No hay pedidos para hoy todavía</div>';
-    return;
-  }
-
-  // Agrupar por categoría
+  if (!prod.length) { container.innerHTML = '<div class="empty-state"><div class="es-icon">🍝</div>No hay pedidos para hoy todavía</div>'; return; }
   const cats = {};
-  prod.forEach(p => {
-    if (!cats[p.categoria]) cats[p.categoria] = [];
-    cats[p.categoria].push(p);
-  });
-
-  let html = '';
+  prod.forEach(p => { if (!cats[p.categoria]) cats[p.categoria]=[]; cats[p.categoria].push(p); });
+  let html = '<div class="prod-grid">';
   Object.entries(cats).forEach(([cat, prods]) => {
-    html += `<div class="prod-card">
-      <div class="prod-cat-header"><h3>${cat}</h3></div>`;
+    html += `<div class="prod-card"><div class="prod-cat-header"><h3>${cat}</h3></div>`;
     prods.forEach(p => {
-      html += `<div class="prod-item">
-        <div>
-          <div class="prod-name">${p.nombre}</div>
-          <div class="prod-unidad">${p.unidad}</div>
-        </div>
-        <div style="text-align:right">
-          <div class="prod-total">${p.total}</div>
-          <div class="prod-total-unit">${p.unidad}</div>
-        </div>
-      </div>`;
+      html += `<div class="prod-item"><div><div class="prod-name">${p.nombre}</div><div class="prod-unidad">${p.unidad}</div></div><div style="text-align:right"><div class="prod-total">${p.total}</div><div class="prod-total-unit">${p.unidad}</div></div></div>`;
     });
     html += '</div>';
   });
-
+  html += '</div>';
+  html += `<button class="btn-print" onclick="imprimir()">🖨 Imprimir producción completa</button>`;
   container.innerHTML = html;
 }
 
-// ─────────────────────────────────────────────────────
-// LOGÍSTICA
-// ─────────────────────────────────────────────────────
+// ─── LOGÍSTICA ───────────────────────────────
 function renderLogistica(suc) {
   const container = document.getElementById(`suc-${suc}`);
   const dist = F.dashboard.distribucion[suc];
-  const pedido    = dist.pedido_hoy || [];
-  const pendientes = dist.pendientes || [];
-
-  if (!pedido.length && !pendientes.length) {
-    container.innerHTML = '<div class="empty-state"><div class="es-icon">📭</div>Sin pedidos para hoy</div>';
-    return;
-  }
-
+  const pedido = dist.pedido_hoy||[], pendientes = dist.pendientes||[];
+  if (!pedido.length && !pendientes.length) { container.innerHTML = '<div class="empty-state"><div class="es-icon">📭</div>Sin pedidos para hoy</div>'; return; }
   let html = '';
-
-  // Pedido del día
   if (pedido.length) {
-    html += `<div class="despacho-section">
-      <div class="despacho-section-header"><h3>Pedido del día</h3></div>`;
-    pedido.forEach(item => {
-      const key = item.ID_Linea || item.ID_Producto;
-      html += renderDespRow(suc, key, item, false);
-    });
+    html += `<div class="despacho-section"><div class="despacho-section-header"><h3>Pedido del día</h3></div>`;
+    pedido.forEach(item => { html += renderDespRow(suc, item.ID_Linea||item.ID_Producto, item, false); });
     html += '</div>';
   }
-
-  // Pendientes de días anteriores
   if (pendientes.length) {
-    html += `<div class="despacho-section">
-      <div class="despacho-section-header">
-        <h3>Pendientes anteriores</h3>
-        <span class="pend-tag">De días anteriores</span>
-      </div>`;
-    pendientes.forEach(item => {
-      const key = 'PEND_' + item.ID_Pendiente;
-      html += renderDespRow(suc, key, item, true);
-    });
+    html += `<div class="despacho-section"><div class="despacho-section-header"><h3>Pendientes anteriores</h3><span class="pend-tag">De días anteriores</span></div>`;
+    pendientes.forEach(item => { html += renderDespRow(suc, 'PEND_'+item.ID_Pendiente, item, true); });
     html += '</div>';
   }
-
   container.innerHTML = html;
   actualizarTotalSuc(suc);
 }
@@ -520,82 +584,59 @@ function renderLogistica(suc) {
 function renderDespRow(suc, key, item, esPendiente) {
   const d = F.despachos[suc][key];
   const cantPedida = esPendiente ? Number(item.Cantidad_Pendiente) : Number(item.Cantidad);
-  const precio     = Number(item.Precio_Snapshot || item.precio_snapshot || 0);
-  const nombre     = item.Nombre || item.nombre || '';
-  const unidad     = item.Unidad || item.unidad || '';
-  const cat        = item.Categoria || item.categoria || '';
-
-  return `<div class="desp-row" id="row-${suc.replace(/ /g,'_')}-${key}">
+  const precio = Number(item.Precio_Snapshot||item.precio_snapshot||0);
+  const nombre = item.Nombre||item.nombre||'';
+  const unidad = item.Unidad||item.unidad||'';
+  const cat    = item.Categoria||item.categoria||'';
+  const fechaOrigen = item.Fecha_Origen ? ` · ${item.Fecha_Origen}` : '';
+  const sucId  = suc.replace(/ /g,'_');
+  return `<div class="desp-row" id="row-${sucId}-${key}">
     <div class="desp-row-top">
-      <div>
-        <div class="desp-nombre">${nombre}</div>
-        <div class="desp-pedido">${cat} · Pedido: ${cantPedida} ${unidad}</div>
-      </div>
+      <div><div class="desp-nombre">${nombre}</div><div class="desp-pedido">${cat}${fechaOrigen} · Pedido: ${cantPedida} ${unidad}</div></div>
       <div class="desp-precio">${pesos(precio)} / ${unidad}</div>
     </div>
     <div class="desp-controls">
       <div class="desp-qty-wrap">
         <span class="desp-qty-label">A despachar</span>
-        <button class="qty-btn" onclick="deltaDesp('${suc}','${key}',-1,'${unidad}')">−</button>
-        <input class="qty-input" type="number" min="0" max="${cantPedida}"
-          value="${d.cant}" id="qty-${suc.replace(/ /g,'_')}-${key}"
-          onchange="setDesp('${suc}','${key}',this.value,'${cantPedida}')"
-          oninput="setDesp('${suc}','${key}',this.value,'${cantPedida}')"/>
-        <button class="qty-btn" onclick="deltaDesp('${suc}','${key}',1,'${unidad}')">+</button>
+        <button class="qty-btn" onclick="deltaDesp('${suc}','${key}',-1)">−</button>
+        <input class="qty-input" type="number" min="0" max="${cantPedida}" value="${d.cant}" id="qty-${sucId}-${key}" onchange="setDesp('${suc}','${key}',this.value,${cantPedida})" oninput="setDesp('${suc}','${key}',this.value,${cantPedida})"/>
+        <button class="qty-btn" onclick="deltaDesp('${suc}','${key}',1)">+</button>
       </div>
-      <div class="estado-select" id="estado-${suc.replace(/ /g,'_')}-${key}">
+      <div class="estado-select" id="estado-${sucId}-${key}">
         <label>Estado</label>
         <div class="estado-btns">
-          <button class="btn-estado ${d.estado==='completo'?'selected-completo':''}"
-            onclick="setEstado('${suc}','${key}','completo')">Completo</button>
-          <button class="btn-estado ${d.estado==='pendiente'?'selected-pendiente':''}"
-            onclick="setEstado('${suc}','${key}','pendiente')">Pendiente</button>
-          <button class="btn-estado ${d.estado==='cancelado'?'selected-cancelado':''}"
-            onclick="setEstado('${suc}','${key}','cancelado')">Cancelado</button>
+          <button class="btn-estado ${d.estado==='completo'?'selected-completo':''}"   onclick="setEstado('${suc}','${key}','completo')">Completo</button>
+          <button class="btn-estado ${d.estado==='pendiente'?'selected-pendiente':''}" onclick="setEstado('${suc}','${key}','pendiente')">Pendiente</button>
+          <button class="btn-estado ${d.estado==='cancelado'?'selected-cancelado':''}" onclick="setEstado('${suc}','${key}','cancelado')">Cancelado</button>
         </div>
       </div>
     </div>
-    <div class="desp-subtotal" id="sub-${suc.replace(/ /g,'_')}-${key}">
-      Subtotal: <span>${pesos(d.cant * precio)}</span>
-    </div>
+    <div class="desp-subtotal" id="sub-${sucId}-${key}">Subtotal: <span>${pesos(d.cant*precio)}</span></div>
   </div>`;
 }
 
-// ─────────────────────────────────────────────────────
-// DESPACHO CONTROLS
-// ─────────────────────────────────────────────────────
-function deltaDesp(suc, key, delta, unidad) {
+// ─── DESPACHO CONTROLS ───────────────────────
+function deltaDesp(suc, key, delta) {
   const d = F.despachos[suc][key];
-  const nuevo = Math.max(0, d.cant + delta);
-  aplicarDesp(suc, key, nuevo);
+  aplicarDesp(suc, key, Math.max(0, d.cant + delta));
 }
-
 function setDesp(suc, key, val, max) {
-  const nuevo = Math.min(Number(max), Math.max(0, parseFloat(val) || 0));
-  aplicarDesp(suc, key, nuevo);
+  aplicarDesp(suc, key, Math.min(Number(max), Math.max(0, parseFloat(val)||0)));
 }
-
 function aplicarDesp(suc, key, cant) {
   F.despachos[suc][key].cant = cant;
   const sucId = suc.replace(/ /g,'_');
-
   const input = document.getElementById(`qty-${sucId}-${key}`);
   if (input) input.value = cant;
-
   const item  = F.despachos[suc][key].item;
-  const precio = Number(item.Precio_Snapshot || item.precio_snapshot || 0);
+  const precio = Number(item.Precio_Snapshot||item.precio_snapshot||0);
   const subEl  = document.getElementById(`sub-${sucId}-${key}`);
-  if (subEl) subEl.innerHTML = `Subtotal: <span>${pesos(cant * precio)}</span>`;
-
-  // Auto-set estado
-  const cantPedida = F.despachos[suc][key].esPendiente
-    ? Number(item.Cantidad_Pendiente) : Number(item.Cantidad);
+  if (subEl) subEl.innerHTML = `Subtotal: <span>${pesos(cant*precio)}</span>`;
+  const cantPedida = F.despachos[suc][key].esPendiente ? Number(item.Cantidad_Pendiente) : Number(item.Cantidad);
   if (cant >= cantPedida) setEstado(suc, key, 'completo');
   else if (cant > 0 && F.despachos[suc][key].estado === 'completo') setEstado(suc, key, 'pendiente');
-
   actualizarTotalSuc(suc);
 }
-
 function setEstado(suc, key, estado) {
   F.despachos[suc][key].estado = estado;
   const sucId = suc.replace(/ /g,'_');
@@ -608,137 +649,99 @@ function setEstado(suc, key, estado) {
   });
   actualizarTotalSuc(suc);
 }
-
 function actualizarTotalSuc(suc) {
   let total = 0;
   const dist = F.dashboard.distribucion[suc];
-  const todos = [...(dist.pedido_hoy||[]), ...(dist.pendientes||[])];
-
-  todos.forEach(item => {
+  [...(dist.pedido_hoy||[]), ...(dist.pendientes||[])].forEach(item => {
     const esPend = !!item.ID_Pendiente;
-    const key    = esPend ? 'PEND_' + item.ID_Pendiente : (item.ID_Linea || item.ID_Producto);
+    const key    = esPend ? 'PEND_'+item.ID_Pendiente : (item.ID_Linea||item.ID_Producto);
     const d      = F.despachos[suc][key];
     if (!d) return;
-    const precio = Number(item.Precio_Snapshot || item.precio_snapshot || 0);
+    const precio = Number(item.Precio_Snapshot||item.precio_snapshot||0);
     total += d.cant * precio;
   });
-
   document.getElementById('confirmar-amount').textContent = pesos(total);
 }
 
-// ─────────────────────────────────────────────────────
-// CONFIRMAR DESPACHO
-// ─────────────────────────────────────────────────────
+// ─── CONFIRMAR DESPACHO ───────────────────────
 async function confirmarDespacho() {
   const suc  = F.sucActiva;
   const dist = F.dashboard.distribucion[suc];
   const lineas = [];
-
-  const todos = [...(dist.pedido_hoy||[]), ...(dist.pendientes||[])];
-  todos.forEach(item => {
+  [...(dist.pedido_hoy||[]), ...(dist.pendientes||[])].forEach(item => {
     const esPend = !!item.ID_Pendiente;
-    const key    = esPend ? 'PEND_' + item.ID_Pendiente : (item.ID_Linea || item.ID_Producto);
+    const key    = esPend ? 'PEND_'+item.ID_Pendiente : (item.ID_Linea||item.ID_Producto);
     const d      = F.despachos[suc][key];
     if (!d) return;
     const cantPedida = esPend ? Number(item.Cantidad_Pendiente) : Number(item.Cantidad);
-
     lineas.push({
-      id_linea:        item.ID_Linea || '',
-      id_pedido:       item.ID_Pedido || '',
+      id_linea:        item.ID_Linea||'',
+      id_pedido:       item.ID_Pedido||'',
       es_pendiente:    esPend,
-      id_pendiente:    item.ID_Pendiente || '',
-      estado_diff:     d.estado === 'cancelado' ? 'cancelado' : (d.cant < cantPedida ? 'pendiente' : 'completo'),
+      id_pendiente:    item.ID_Pendiente||'',
+      estado_diff:     d.estado==='cancelado' ? 'cancelado' : (d.cant < cantPedida ? 'pendiente' : 'completo'),
       sucursal:        suc,
       id_producto:     item.ID_Producto,
-      categoria:       item.Categoria || item.categoria,
-      nombre:          item.Nombre || item.nombre,
-      unidad:          item.Unidad || item.unidad,
-      precio_snapshot: Number(item.Precio_Snapshot || item.precio_snapshot || 0),
+      categoria:       item.Categoria||item.categoria,
+      nombre:          item.Nombre||item.nombre,
+      unidad:          item.Unidad||item.unidad,
+      precio_snapshot: Number(item.Precio_Snapshot||item.precio_snapshot||0),
       cant_pedida:     cantPedida,
-      cant_despachada: d.estado === 'cancelado' ? d.cant : d.cant
+      cant_despachada: d.cant
     });
   });
-
   if (!lineas.length) { toast('No hay items para despachar'); return; }
-
   loading('Guardando despacho...');
   try {
-    const r = await api({ action: 'saveDespacho', data: JSON.stringify({ fecha: F.fecha, lineas }) });
+    const r = await api({ action:'saveDespacho', data: JSON.stringify({ fecha: F.fecha, lineas }) });
     stopLoading();
-    if (r.ok) {
-      toast(`✓ Despacho de ${suc} confirmado`, true);
-      // Recargar dashboard
-      await cargarDashboard();
-      switchSuc(suc);
-    } else {
-      toast('Error: ' + (r.error || 'intentá de nuevo'));
-    }
-  } catch {
-    stopLoading();
-    toast('Sin conexión — intentá de nuevo');
-  }
+    if (r.ok) { toast(`✓ Despacho de ${suc} confirmado`, true); await cargarDashboard(); switchSuc(suc); }
+    else       { toast('Error: '+(r.error||'intentá de nuevo')); }
+  } catch { stopLoading(); toast('Sin conexión — intentá de nuevo'); }
 }
 
-// ─────────────────────────────────────────────────────
-// IMPRIMIR
-// ─────────────────────────────────────────────────────
+// ─── IMPRIMIR ─────────────────────────────────
 function imprimir() {
-  // Mostrar todas las páginas para imprimir
-  document.querySelectorAll('.page').forEach(p => p.style.display = 'block');
+  document.querySelectorAll('.page').forEach(p => p.style.display='block');
   window.print();
-  // Restaurar
-  setTimeout(() => {
-    document.querySelectorAll('.page').forEach(p => p.style.display = '');
-    document.getElementById('page-produccion').classList.add('active');
-  }, 500);
+  setTimeout(() => { document.querySelectorAll('.page').forEach(p=>p.style.display=''); document.getElementById('page-produccion').classList.add('active'); }, 500);
 }
 
-// ─────────────────────────────────────────────────────
-// NOTIFICACIONES FÁBRICA
-// ─────────────────────────────────────────────────────
+// ─── AVISOS ───────────────────────────────────
 async function enviarNotif() {
   const dest   = document.getElementById('notif-dest').value;
   const titulo = document.getElementById('notif-titulo').value.trim();
   const msg    = document.getElementById('notif-msg').value.trim();
-
   if (!titulo || !msg) { toast('Completá título y mensaje'); return; }
-
   loading('Enviando aviso...');
   try {
-    const r = await api({
-      action: 'crearNotificacion',
-      data: JSON.stringify({ tipo: 'manual', destinatario: dest, titulo, mensaje: msg })
-    });
+    const r = await api({ action:'crearNotificacion', data: JSON.stringify({ tipo:'manual', destinatario:dest, titulo, mensaje:msg }) });
     stopLoading();
     if (r.ok) {
       toast('✓ Aviso enviado', true);
-      document.getElementById('notif-titulo').value = '';
-      document.getElementById('notif-msg').value = '';
-      document.getElementById('notif-dest').value = 'Todas';
+      document.getElementById('notif-titulo').value='';
+      document.getElementById('notif-msg').value='';
       cargarNotifEnviadas();
-    } else {
-      toast('Error al enviar');
-    }
-  } catch {
-    stopLoading();
-    toast('Sin conexión');
-  }
+    } else { toast('Error al enviar'); }
+  } catch { stopLoading(); toast('Sin conexión'); }
 }
 
 async function cargarNotifEnviadas() {
   const container = document.getElementById('notifs-enviadas');
   try {
-    const r = await api({ action: 'getNotificacionesFabrica' });
+    const r = await api({ action:'getNotificacionesFabrica' });
     if (r.ok && r.notificaciones.length) {
-      const hoy = r.notificaciones.filter(n => n.Fecha === F.fecha);
+      const hoy = r.notificaciones.filter(n => String(n.Fecha||'').substring(0,10) === F.fecha);
       if (hoy.length) {
         container.innerHTML = hoy.map(n => `
-          <div style="background:white;border-radius:10px;border:1px solid var(--border);padding:12px 16px;margin-bottom:8px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:13px;font-weight:700;color:var(--navy)">${n.Titulo}</span>
-              <span style="font-size:11px;color:var(--text-muted)">${n.Destinatario}</span>
+          <div class="aviso-item">
+            <div class="aviso-item-body">
+              <div class="ai-titulo">${n.Titulo}</div>
+              <div class="ai-msg">${n.Mensaje}</div>
             </div>
-            <div style="font-size:13px;color:var(--text-muted);margin-top:4px">${n.Mensaje}</div>
+            <div class="aviso-item-meta">
+              <span class="ai-dest">${n.Destinatario}</span>
+            </div>
           </div>`).join('');
         return;
       }
@@ -749,35 +752,41 @@ async function cargarNotifEnviadas() {
   }
 }
 
-// ─────────────────────────────────────────────────────
-// TABS
-// ─────────────────────────────────────────────────────
-function switchTab(tab) {
-  document.querySelectorAll('.main-tab').forEach((b,i) => {
-    b.classList.toggle('active', ['produccion','logistica','notificaciones'][i] === tab);
+// ─── NAVEGACIÓN ───────────────────────────────
+function switchPage(page) {
+  // Sidebar
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const navEl = document.getElementById(`nav-${page}`);
+  if (navEl) navEl.classList.add('active');
+  // Mobile nav
+  document.querySelectorAll('.mobile-nav-item').forEach((n,i) => {
+    n.classList.toggle('active', ['produccion','logistica','avisos'][i] === page);
   });
+  // Pages
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(`page-${tab}`).classList.add('active');
-  if (tab === 'notificaciones') cargarNotifEnviadas();
+  document.getElementById(`page-${page}`).classList.add('active');
+  // Header
+  const info = PAGES[page];
+  if (info) {
+    document.getElementById('content-title').textContent = info.title;
+    document.getElementById('content-sub').textContent   = info.sub;
+  }
+  if (page === 'avisos') cargarNotifEnviadas();
 }
 
 function switchSuc(suc) {
   F.sucActiva = suc;
-  document.querySelectorAll('.suc-tab').forEach((b,i) => {
-    b.classList.toggle('active', SUCURSALES[i] === suc);
-  });
+  document.querySelectorAll('.suc-tab').forEach((b,i) => b.classList.toggle('active', SUCURSALES[i]===suc));
   document.querySelectorAll('.suc-panel').forEach(p => p.classList.remove('active'));
   document.getElementById(`suc-${suc}`).classList.add('active');
   actualizarTotalSuc(suc);
 }
 
-// ─────────────────────────────────────────────────────
-// LOGOUT
-// ─────────────────────────────────────────────────────
+// ─── LOGOUT ───────────────────────────────────
 function logout() {
-  F.dashboard = null; F.despachos = {};
-  document.getElementById('pin').value = '';
-  document.getElementById('btn-login').disabled = true;
+  F.dashboard=null; F.despachos={};
+  document.getElementById('pin').value='';
+  document.getElementById('btn-login').disabled=true;
   screen('scr-login');
 }
 </script>
