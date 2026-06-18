@@ -37,8 +37,8 @@
     /* ── SCREENS ───────────────────────────────── */
     .screen { display: none; }
     .screen.active { display: block; }
-
-    /* ── LOADING ───────────────────────────────── */
+    #scr-login.active { display: flex; flex-direction: column; align-items: center; background: var(--cream); min-height: 100vh; }
+    #scr-app.active   { display: flex; }
     .loading-overlay { position: fixed; inset: 0; background: rgba(28,58,74,0.55); display: none; align-items: center; justify-content: center; z-index: 500; }
     .loading-overlay.show { display: flex; }
     .loading-box { background: white; border-radius: 16px; padding: 28px 36px; text-align: center; }
@@ -52,7 +52,6 @@
     .toast.ok   { background: var(--green); }
 
     /* ── LOGIN ─────────────────────────────────── */
-    #scr-login { min-height: 100vh; display: flex; flex-direction: column; align-items: center; background: var(--cream); }
     .login-header { background: var(--navy); width: 100%; padding: 40px 24px 32px; text-align: center; }
     .login-logo   { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; color: white; letter-spacing: 2px; }
     .login-sub    { font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 3px; text-transform: uppercase; margin-top: 4px; }
@@ -72,8 +71,6 @@
     /* ══════════════════════════════════════════════
        DASHBOARD LAYOUT — sidebar + content
     ══════════════════════════════════════════════ */
-    #scr-app { display: none; min-height: 100vh; }
-    #scr-app.active { display: flex; }
 
     /* ── SIDEBAR ────────────────────────────────── */
     .sidebar {
